@@ -1,29 +1,38 @@
-# Portable appearance presets
+# Pegasus Appearance
 
-Pegasus Appearance is a configuration-only desktop plugin. Select it in Configuration → Desktop plugins → Configure. It adds no chat tab, composer button, agent or service component.
+Pegasus Appearance is a native Windows desktop plugin for importing, previewing, applying and exporting shared Cerebral color presets. Package `pegasus.appearance` is **1.0.0** in [desktop-plugin.json](desktop-plugin.json); its assembly version follows repository build defaults.
 
-Import a `.CerebralTheme` file (or `.json`) to preview its name and colors. Apply validates and selects it through the authenticated Worker owner command. Export reads the current effective preset and saves portable JSON. Restore Blue White clears the custom selection. Existing **System**, **Light** and **Dark** mode preferences remain independent of the preset.
+It supplies the **Appearance** Configuration panel. It does not run a model, change chat content or introduce a service plugin. Presets contain both light and dark palettes; the normal **System**, **Light** and **Dark** appearance modes remain separate choices.
 
-A preset is data, with no executable XAML, resources, scripts, paths or assembly references:
+## Build and install
 
-```json
-{
-  "schemaVersion": 1,
-  "id": "blue-white",
-  "name": "Blue White",
-  "light": { "...all sixteen color tokens...": "#RRGGBB" },
-  "dark": { "...all sixteen color tokens...": "#RRGGBB" }
-}
+Use Windows and the .NET SDK selected by `global.json`. From the repository root in PowerShell:
+
+```powershell
+dotnet build examples/Cerebral.AppearanceThemePlugin/Cerebral.AppearanceThemePlugin.csproj -c Release
 ```
 
-The complete usable example is `Presets/Blue White.CerebralTheme` in the source tree and `Blue White.CerebralTheme` beside this README in a bundled installation. It is generated from the authoritative Core default policy. Both palettes require exactly these sixteen tokens: `window`, `surface`, `raisedSurface`, `ink`, `muted`, `accent`, `onAccent`, `line`, `hover`, `pressed`, `selection`, `selectionText`, `codeSurface`, `errorBackground`, `errorText`, `errorBorder`.
+The project references the source Desktop Plugins SDK project; it has no `CerebralSdkDirectory` override. Default output is `examples/Cerebral.AppearanceThemePlugin/bin/Release/net10.0-windows/`, including the DLL and `desktop-plugin.json`. An explicit after-build target copies the manifest. Host SDK assemblies remain host-provided.
 
-Files are at most 16 KiB of UTF-8 JSON. The id uses 1–64 lowercase letters, digits, dots, hyphens or underscores and starts with a letter or digit. The name is 1–100 characters. Colors are opaque `#RRGGBB`. Duplicate, missing and unknown fields are rejected. Normal text pairs require at least 4.5:1 contrast against their actual shared surfaces; decorative borders have no text-contrast requirement.
+The project also copies this README and any `Presets/*.CerebralTheme` files that exist. This snapshot does not include a preset collection in that directory; **Restore Blue White** uses the host's built-in preset.
 
-The private versioned owner bridge is `interface.theme.get` / `interface.theme.set`. State contains `revision` and the effective `preset`. Set supplies `expectedRevision` and a preset; null restores the default. A changed revision or invalid import leaves the current selection unchanged. Refresh before retrying. Accepted changes emit `interface.theme.updated`; connected Chat and Configuration update existing brush instances without rebuilding controls. The plugin uses only the public desktop SDK, while Core owns semantic validation and Worker owns persistence and authorization.
+Use the supported native catalog workflow in [Plugin installation](../../docs/PLUGINS.md) to install and enable the package. Building an output directory does not install it. See [Build](../../docs/BUILD.md) and [Setup](../../docs/SETUP.md) for host prerequisites. These are source instructions, not a clean-build or installed-runtime test result.
 
-Theme files are manually imported and exported. This plugin does not register a Windows file association or execute a theme package.
+## Use
 
-To transfer a theme, export it from **Pegasus Appearance → Export current preset**, copy that file to the other Cerebral machine, then use **Import preset → Apply imported preset** in the same plugin. The JSON contains no machine paths or installation-specific values. To make another theme, copy the complete example, give it a new `id` and `name`, and edit the light and dark color values; no host rebuild is required.
+1. Open the **Appearance** Configuration panel and use **Refresh** to read the saved preset.
+2. Choose **Import preset…** for a `.CerebralTheme` or `.json` file. Import displays a candidate and swatches; it does not save or apply the candidate.
+3. Review the preview, then choose **Apply imported preset**.
+4. Use **Export current preset…** to save the effective saved preset, or **Restore Blue White** to return to the built-in palette.
 
-Version 1 transfers color palettes. Shared WPF templates retain the control layout and behavior, while plugins can extend those styles or use the public theme resource keys. Fonts, spacing, custom control templates and raster branding are not fields in this format. Adding them later requires an explicitly versioned format and a corresponding plugin/host implementation; an imported color preset does not silently claim to replace them. The built-in Blue White palette remains the recovery fallback.
+The panel requires the structured service bridge. Reads use `interface.theme.get`; changes use `interface.theme.set` with the observed revision. If another editor changes the theme, refresh and review rather than repeatedly applying an old revision. The host owns persistence and shared-control updates; the plugin has no separate theme database.
+
+## Files, privacy and troubleshooting
+
+Portable theme files are JSON bounded to **16 KiB**. Invalid or oversized input is refused. Export writes to the selected file and uses the save dialog's overwrite confirmation. Review a theme before sharing it; a preset is data, not an executable extension.
+
+If actions are unavailable, check the host connection and plugin enablement. An unconfirmed save is not proof that the theme changed: read the current preset before deciding what to do next. Shared theme changes do not necessarily affect every custom-rendered surface.
+
+No API key, model weights or extra inference runtime is required. First-party code follows the repository [LICENSE](../../LICENSE); imported themes retain their own provenance and terms.
+
+Source: [AppearanceThemePlugin.cs](AppearanceThemePlugin.cs) contains the panel, revision checks and portable reader; [the project](Cerebral.AppearanceThemePlugin.csproj) defines build inputs.

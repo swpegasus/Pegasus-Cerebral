@@ -6,6 +6,8 @@ This is a source-only preview. Runtime binaries, model weights and signing/trust
 
 AI Dictation has separate notices for its speech runtime and model; including a notice does not mean the corresponding model or runtime is bundled. Do not remove these notices when preparing your own permitted distribution.
 
+The [AI Dictation license map](examples/Cerebral.AiDictationPlugin/Licensing/README.md) explains the preserved upstream notice's source-tree-relative links. Optional upstream source/submodule paths are not bundled by this notice-only preview. The original third-party license and notice texts remain unchanged.
+
 ## Included notice files
 
 - [assets/icons/chat-v1/LICENSE.txt](assets/icons/chat-v1/LICENSE.txt)

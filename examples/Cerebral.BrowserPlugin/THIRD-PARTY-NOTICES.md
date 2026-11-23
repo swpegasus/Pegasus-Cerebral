@@ -11,6 +11,6 @@ Licensing.Microsoft.Playwright-1.63.0.NUSPEC.md retains the publisher's exact Nu
 
 The NuGet package includes its driver runtime and additional third-party notices. Preserve the complete package output, including its hidden `.playwright` driver directory and all upstream license/notice files. Do not select only the DLL.
 
-The supplied X:\browseruse project was Browser Use 0.1.40, Copyright (c) 2024 Gregor Zunic, MIT. Its browser architecture was reviewed. No Browser Use source or Python agent implementation is included in this plugin. Its license does not license Chrome, Edge, or unrelated browser binaries.
+Browser Use 0.1.40, Copyright (c) 2024 Gregor Zunic, MIT, was reviewed as an architectural reference. No Browser Use source or Python agent implementation is included in this plugin. Its license does not license Chrome, Edge, or unrelated browser binaries.
 
 No browser binary ships in this source package. A future Chromium resource must carry its exact version, architecture, upstream download URL, Chromium license, complete third-party notices and any distribution-specific terms. Chromium source licensing is at https://chromium.googlesource.com/chromium/src/+/main/LICENSE . That source license alone does not prove the terms of a particular downloadable binary. Microsoft.Playwright 1.63.0's default browser descriptor labels its Chromium-family downloads “Chrome for Testing” and “Chrome Headless Shell”; this package does not download or redistribute them.

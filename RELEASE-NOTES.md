@@ -1,5 +1,11 @@
 # Release notes
 
+## Documentation follow-up — 2026-11-22
+
+The current main branch adds source-checked setup and usage guides for Cerebral and all 22 implemented plugin families. Start at the [documentation index](docs/README.md), [first setup](docs/SETUP.md) or [plugin directory](docs/PLUGINS.md). The guides cover exact package versions, build/SDK inputs, desktop versus service installation, models/runtime acquisition, defaults, data/permissions, troubleshooting and third-party licensing.
+
+This follow-up changes documentation only. It does not qualify a new application build or installer. The original source release tag and source ZIP remain unchanged; use current main for these newer guides.
+
 ## 0.2.22-preview.20261122 — source development preview
 
 This release shares the Cerebral source baseline so developers can inspect, build and explore the Windows AI workspace while development continues.

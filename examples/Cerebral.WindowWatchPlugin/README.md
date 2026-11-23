@@ -1,29 +1,63 @@
 # Window Watch
 
-Window Watch is an optional Cerebral desktop plugin for analyzing one selected Windows window. The composer action opens a floating panel. This project can be built separately from the Cerebral solution.
+Analyze **one explicitly selected Windows window** with a local vision model, either on demand or on a change-aware timer. The plugin provides a floating panel, not general desktop control.
 
-## Use
+**Desktop package:** `pegasus.window-watch`, version **0.1.2**, **disabled by default**.
 
-1. Open **Window Watch** and use the gear button to show **Options**. Refresh the window list if needed and select the target.
-2. Enter the numeric loopback URL of a local OpenAI-compatible vision endpoint and its model name. For example, use http://127.0.0.1:8080/v1/chat/completions if that is the address your local model already serves.
-3. Enter an optional context prompt. The camera button analyzes one snapshot. The play button starts automatic capture using the interval from Options, between 5 and 3600 seconds. Pause stops the schedule and cancels any pending analysis locally. Use play to resume with the same target and context. Starting a valid capture folds Options away. The focus button also folds the context prompt away, leaving the response, target, timer, and capture controls. Open Options or press the focus button again to restore the prompt; folding keeps its text and reply memory.
-4. **Skip unchanged snapshots** compares the normalized pixels with the last successfully analyzed image. Manual analysis forces a fresh request. The outline tracks the selected window during monitoring. Focus changes leave that selection in place.
-5. **Remember recent replies this session** includes up to the chosen number of recent replies, with at most 1,200 characters per reply. It starts off. **Clear replies** clears the response box and retained replies and keeps the context prompt.
+## Requirements, build and installation
 
-Balanced mode scales the longest image side to at most 1,600 pixels and encodes JPEG. **Text detail** raises that cap to 2,560 pixels and uses lossless PNG after resizing. Use it when small text needs more detail. Each mode preserves the aspect ratio and caps its upload size.
+Requires Windows x64, .NET 10, a compatible `Cerebral.Desktop.Plugins` SDK, installed Cortex PAO with a working signed-in-user window-capture route, and a separately running trusted local vision endpoint. No model, projector or inference runtime is downloaded by this plugin.
 
-Pause other model work before starting. Each panel allows one analysis at a time. Busy responses stop auto mode and show a message in the panel. After cancelling an in-flight request or encountering a timeout, check whether the model is still busy before restarting.
+```powershell
+dotnet build .\examples\Cerebral.WindowWatchPlugin\Cerebral.WindowWatchPlugin.csproj -c Release
+```
 
-The panel uses Cerebral's live theme brushes when hosted and a window-local Blue White palette when opened without the host theme. All toolbar icons have keyboard focus, accessible labels, and tooltips. Highlighted buttons indicate an open section; the mode caption identifies automatic capture, pause, and optional reply retention.
+The default output is `bin/Release/net10.0-windows/` beneath this project, including the native DLL and copied `desktop-plugin.json`. An advanced compatibility build may supply `DesktopPluginSdkPath`; it must match the intended host.
 
-## Requirements and boundaries
+Install from Configuration → **Desktop plugins → Install…**, review the package disabled, then **Manage → Enable → Go**. Open the **Window Watch** composer action in Main. Refresh or reopen Main if the action is not mounted. Enabling this desktop package does not itself load a model or restart the Worker.
 
-- Cortex's signed-in tray provides the AutoIt-backed window capture command. It needs a restored window that supports window-specific capture. A minimized window pauses automatic capture, and closing the selected window ends monitoring.
-- Use a vision endpoint you run locally and trust with the selected window's contents. This plugin accepts unauthenticated HTTP on a numeric loopback address. The model must accept image_url content in chat completions. An already running model can be reused if it offers this API.
-- Cerebral chat accepts images through its attachment and workflow route. The existing separate desktop inference command accepts text messages. Reusing a private Worker-managed vision instance for this panel would require a supported stateless image route from the host.
-- Cortex publishes each snapshot to a private temporary file. Window Watch checks the capture receipt and removes that file before submitting the image. The response and optional reply memory live in the panel's memory for that session.
-- The package manifest defaults to disabled. Previewing or installing the package follows the normal Cerebral desktop plugin lifecycle.
+## First analysis
 
-## Build
+1. Open **Options** with the gear button, **Refresh windows**, and select the target window.
+2. Enter the endpoint of a local OpenAI-compatible vision server and the model name it serves. Only **HTTP on a numeric loopback address** with exact path `/v1/chat/completions` is accepted; for example `http://127.0.0.1:8080/v1/chat/completions`. Remote hosts, credentials, query strings and fragments are refused.
+3. Enter optional context describing what to examine.
+4. Use the **camera** control for one snapshot. The **play** control begins automatic analysis; **pause** stops scheduling and cancels the local pending analysis wait.
+5. **Clear replies** clears the displayed response and remembered replies while preserving the context prompt.
 
-Use .NET 10 on Windows. Build the project with an isolated ArtifactsPath and set DesktopPluginSdkPath to the host's Cerebral.Desktop.Plugins.dll. The manifest is copied beside the plugin DLL. The host supplies its SDK assembly.
+The vision server must accept `image_url` content. This panel does not attach to an arbitrary private Worker-managed model instance through Cerebral's normal text inference command.
+
+## Options and defaults
+
+| Option | Default / range |
+| --- | --- |
+| Automatic interval | 30 seconds; accepted range 5–3,600 |
+| Skip unchanged snapshots | On; manual analysis still forces a request |
+| Text detail | Off; balanced image up to 1,600 pixels on the longest side, JPEG |
+| Text detail enabled | Up to 2,560 pixels, lossless PNG after resizing |
+| Outline selected window | On |
+| Keep panel on top | On |
+| Remember recent replies this session | Off; selected limit initially 3, configurable 1–10 |
+
+Options, prompt, selected window and replies are panel-session state in this source, not a saved global configuration. Optional reply memory bounds each prior reply to 1,200 characters and labels it as potentially stale. Closing the panel clears it. Folding Options or using focus mode preserves the current prompt/replies.
+
+The client requests at most 640 output tokens with a 90-second deadline. Each panel admits one analysis at a time. These settings do not reserve a model slot or fence unrelated inference.
+
+## Capture, privacy and troubleshooting
+
+The plugin starts the installed Cortex `pao.exe` fixed window-capture operation for the selected window handle. It validates the capture receipt, bytes and hash, decodes only bounded images, and cleans its private temporary capture files before sending the encoded image to the local endpoint. The selected window's pixels can contain sensitive text; choose the target and endpoint accordingly.
+
+Monitoring keeps the selected window when focus changes. A minimized target pauses capture; a closed target ends monitoring. Blank/unsupported captures are refused. The model's response is advice about visible content, not authority to click, type or execute.
+
+- **Capture unavailable/denied:** check installed Cortex and its signed-in-user execution route, restore the target, and inspect the surfaced capture error. Do not weaken capture permissions.
+- **Endpoint rejected:** use a numeric loopback HTTP URL with the exact supported path and a valid image-capable model name.
+- **Busy or timeout:** pause other model work and check whether the backend request is still running before restarting. Cancelling the UI wait is not proof inference stopped.
+- **Small text unreadable / image too large:** try Text detail, resize the target, or reduce its visible content. Image limits remain enforced.
+- **No snapshot changes:** automatic mode skips identical successfully analyzed pixels; use the camera for an explicit fresh analysis.
+
+Source: [WindowWatchPlugin.cs](WindowWatchPlugin.cs), [WatchWindow.cs](WatchWindow.cs), [WatchWindow.Layout.cs](WatchWindow.Layout.cs), [PaoWindowCapture.cs](PaoWindowCapture.cs), [VisionClient.cs](VisionClient.cs), [ReplyMemory.cs](ReplyMemory.cs). Cortex, vision models and runtimes retain their separate licenses.
+
+## Preview and license
+
+These instructions describe the published source. This documentation pass did not restore, compile, install or run the plugin; it is not a fresh-checkout or installed-runtime qualification. Use a host built from a compatible SDK and retain integrity/permission checks when diagnosing failures.
+
+First-party code is covered by the [Pegasus Community License 1.0](../../LICENSE); third-party components retain their own terms. Created by Shayne Winter with development assistance from OpenAI Codex and Pegasus Cerebral. See [plugin lifecycle and permissions](../../docs/PLUGINS.md) and [building Cerebral](../../docs/BUILD.md).

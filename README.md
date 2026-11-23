@@ -6,7 +6,7 @@ Cerebral brings conversation, planning, agent execution, models, context and too
 
 **Development preview: `0.2.22-preview.20261122`.** This release publishes a source baseline for developers and early experimenters. It is a work in progress; a clean-checkout build of this exact snapshot has not been verified.
 
-[Product website](https://cerebral.shaynewinter.com/) · [Build guide](docs/BUILD.md) · [Release notes](RELEASE-NOTES.md)
+[Product website](https://cerebral.shaynewinter.com/) · [Documentation](docs/README.md) · [First setup](docs/SETUP.md) · [Plugin directory](docs/PLUGINS.md) · [Release notes](RELEASE-NOTES.md)
 
 ## One workspace, distinct roles
 
@@ -28,7 +28,15 @@ For example, you might discuss a home-office plan in Main, attach selected measu
 
 This is a **source-only development preview**, with baseline defaults and the included first-party plugin source. Books is excluded. Model weights, native runtime binaries, installers, private development history, personal configuration and security keys are not part of this source release.
 
-The build guide separates source compilation from model/runtime setup. Plugin availability and compatibility still need to be checked for the particular build and host.
+The [plugin directory](docs/PLUGINS.md) covers all 22 implemented plugin families, including their actual package versions, setup and usage guides. Supporting native/protocol/shared projects are documented separately. Included source does not mean a ready-made installer or that every plugin combination has passed a live test.
+
+## Get started
+
+1. Read the [build guide](docs/BUILD.md) for the Windows/.NET SDK prerequisites and application projects.
+2. Follow [first setup](docs/SETUP.md) to launch with an explicit, separate source-preview data folder.
+3. Acquire your own [model and runtime files](docs/MODELS.md); neither is bundled here.
+4. Learn the [workspace controls](docs/USAGE.md), then install only the [plugins](docs/PLUGINS.md) you need.
+5. Review [data and permissions](docs/DATA-AND-PERMISSIONS.md), [troubleshooting](docs/TROUBLESHOOTING.md) and [licensing](docs/LICENSING.md) before enabling integrations or redistributing a package.
 
 ## Hardware and context
 

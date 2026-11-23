@@ -1,56 +1,78 @@
-# Building the source preview
+# Build Cerebral from source
 
-Release label: `0.2.22-preview.20261122`.
-
-This guide identifies the intended build entry points. A fresh-checkout restore, build and full test pass of this exact snapshot have **not been verified**. These commands are not an installer and do not update an existing Cerebral installation.
+This is a **Windows source development preview**, not a supported installer. The published snapshot has not had a complete clean-checkout build/test pass. These instructions describe the intended source entry points and identify inputs that are not included.
 
 ## Prerequisites
 
-- Windows x64.
-- .NET 10 SDK, including its Windows desktop build support.
-- PowerShell 7 for repository PowerShell tooling.
-- Access to the dependencies declared by the checked-in projects and NuGet configuration.
-- For optional CUDA acceleration: a compatible NVIDIA GPU, driver and separately acquired model backend/runtime.
+- Windows x64 for Main, Configuration and desktop plugins, which use WPF.
+- Git, with a normal user account and a writable checkout.
+- The [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0). [global.json](../global.json) selects **10.0.401** with `latestPatch` roll-forward: use a compatible **10.0.4xx** SDK patch, not an arbitrary .NET 10 feature band. The Windows SDK distribution includes the matching desktop runtime.
+- [PowerShell 7](https://learn.microsoft.com/en-us/powershell/scripting/install/install-powershell-on-windows) for repository scripts.
+- NuGet access for declared dependencies, or a correctly populated local package cache.
 
-Use your own configuration and credentials. Do not copy private development settings, account tokens, machine enrollment material, signing keys or private certificates into a checkout or public package.
+Model weights and native inference/speech/browser runtimes are separate downloads. They are not required simply to inspect the C# source, but native-resource and package projects can require their declared assets. See [model setup](MODELS.md) and the individual [plugin guides](PLUGINS.md).
 
-## Intended build entry points
-
-From the repository root, the main projects are:
-
-| Component | Project |
-| --- | --- |
-| Main desktop | `src/Cerebral.Orchestrator/Cerebral.Orchestrator.csproj` |
-| Configuration | `src/Cerebral.Integrator/Cerebral.Integrator.csproj` |
-| Worker runtime | `src/Cerebral.Worker/Cerebral.Worker.csproj` |
-
-For example, these are the ordinary Main source-build commands:
+## Get the public source
 
 ```powershell
-dotnet restore .\src\Cerebral.Orchestrator\Cerebral.Orchestrator.csproj
-dotnet build .\src\Cerebral.Orchestrator\Cerebral.Orchestrator.csproj -c Release --no-restore
+git clone https://github.com/swpegasus/Pegasus-Cerebral.git
+Set-Location Pegasus-Cerebral
+dotnet --info
 ```
 
-Restore and build the other project paths separately when needed. The project graph supplies its declared dependencies. Books is outside this release; do not use its projects or tests as a prerequisite.
+Use current `main` for documentation updates. The tag `v0.2.22-preview.20261122` and its original source archive preserve the initial source snapshot; a later documentation commit does not rewrite that tag or archive.
 
-Use a normal developer checkout and ordinary user session. Do not redirect build output into an installed application directory. Do not set installed-framework override properties merely to make a source build pass; that would be a different compatibility qualification.
+## Build the three applications
 
-If restore or build reports a missing package, bundled input or incompatible reference, retain the diagnostic and treat it as an unresolved preview issue. Do not disable integrity or compatibility guards, introduce another developer's credentials, or claim a successful clean build from isolated historical outputs.
+Build Worker first, then Configuration and Main with the same configuration. Run these commands from the repository root:
 
-## Models and runtimes
+```powershell
+dotnet restore .\src\Cerebral.Worker\Cerebral.Worker.csproj
+dotnet build .\src\Cerebral.Worker\Cerebral.Worker.csproj -c Release --no-restore -p:CerebralIncludeBooks=false
 
-Weights and native inference/runtime binaries are acquired separately from their upstream publishers and are not in this source release. Choose files supported by the selected backend, retain their licenses and provenance, and verify publisher-provided checksums where available.
+dotnet restore .\src\Cerebral.Integrator\Cerebral.Integrator.csproj
+dotnet build .\src\Cerebral.Integrator\Cerebral.Integrator.csproj -c Release --no-restore -p:CerebralIncludeBooks=false
 
-For a GGUF chat backend, select the intended quantized model file in Configuration. Vision additionally requires the matching projector for that exact model/backend combination; a projector is not interchangeable with the chat weights. AI dictation uses a separate speech-recognition model and its own applicable license.
+dotnet restore .\src\Cerebral.Orchestrator\Cerebral.Orchestrator.csproj
+dotnet build .\src\Cerebral.Orchestrator\Cerebral.Orchestrator.csproj -c Release --no-restore -p:CerebralIncludeBooks=false
+```
 
-Keep model/runtime files in a user-selected data location and configure the appropriate path through the product's supported setup. Do not manually put files into an immutable plugin package generation or edit its manifest to substitute a model. This guide does not assert an unverified model filename, revision, checksum or universal default directory.
+| Application | Source project | Usual Release output |
+|---|---|---|
+| Worker host | `src/Cerebral.Worker/Cerebral.Worker.csproj` | `src/Cerebral.Worker/bin/Release/net10.0/` |
+| Configuration | `src/Cerebral.Integrator/Cerebral.Integrator.csproj` | `src/Cerebral.Integrator/bin/Release/net10.0-windows/` |
+| Main | `src/Cerebral.Orchestrator/Cerebral.Orchestrator.csproj` | `src/Cerebral.Orchestrator/bin/Release/net10.0-windows/` |
 
-## Capacity and first use
+Main's source launcher locates the sibling built applications. Build all three before following [First setup](SETUP.md). Use the explicit `--source-local` launch there; a build output path alone does not select an isolated data root.
 
-Start with a model and context/concurrency combination that fits the machine, then use the supported hardware-aware capacity checks. Longer contexts and more simultaneous slots compete for memory; CPU/RAM offload changes performance and fit. A 16 GB CUDA-capable GPU and at least 32 GB RAM are a starter target, not a verified eight-slot × 100K preset.
+These commands are intended build instructions, not a claim that they passed against a fresh machine in this release. If a required SDK, package resource or generated input is missing, diagnose that specific input rather than removing its validation.
 
-Main conversation, technical coordinator work and individual workers can need different logical budgets. Roughly 100K for a coordinator is a soft target where appropriate, not a mandatory allocation to every request.
+## Books exclusion and repository scripts
 
-For the separate Cortex companion, use its [03.54 release and setup documentation](https://github.com/swpegasus/Pegasus-Cortex/releases/tag/v2.2026.11.22.03.54.A). Configure connections and permissions explicitly. Building Cerebral does not enroll a machine, approve tools, install a service or grant full control.
+Books source and the Books plugin are intentionally not published. [Directory.Build.props](../Directory.Build.props) and the build script support `CerebralIncludeBooks=false`. The source defaults to no Books when both Books source projects are absent; a partial Books tree is refused.
 
-Retain the root LICENSE and the applicable third-party notices when distributing your work.
+The broader repository build entry point is:
+
+```powershell
+pwsh -File .\scripts\build.ps1 -IncludeBooks false
+```
+
+That script performs a broader pipeline than the three application builds. Review its parameters and prerequisites first. Publishing output also needs the declared runtime/resources. **The installer path explicitly refuses a no-Books build in this snapshot.** This preview does not contain a supported public Cerebral installer, and these instructions do not bypass that restriction.
+
+## Build plugins against the intended SDK
+
+Read the package-specific README in the [plugin directory](PLUGINS.md). There is no single build command that works for every example:
+
+- Some projects reference desktop SDK projects; others require exact DLL paths or an SDK directory.
+- Some package projects enforce hash/version profiles. A new local SDK can correctly be rejected by an installed-SDK profile.
+- Paired desktop/service packages can have different versions and separate build outputs.
+- AI Dictation's native helper and speech resources have additional acquisition and licensing steps.
+- The hosted-provider examples need explicit developer integration; merely compiling them does not configure a provider account.
+
+Supply the exact declared reference properties. Do not remove SDK hashes, compatibility checks or manifest requirements to make a build pass. Do not copy DLLs into a running installed application's directory.
+
+## Verification and contributions
+
+Run focused checks for the component you change. Tests using fake transports, synthetic instructions or controlled WPF hosts establish fixture behavior, not a real model/provider/hardware pass. The test programs expose different selectors; inspect their `Program.cs` before choosing one.
+
+Keep generated `bin/`, `obj/`, private data, model weights, native runtimes, credentials and signing material out of commits. Review [data boundaries](DATA-AND-PERMISSIONS.md) and [licensing](LICENSING.md) before sharing artifacts.

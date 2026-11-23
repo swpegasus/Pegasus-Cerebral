@@ -1,43 +1,58 @@
-# Review workflow SDK acceptance package
+# Review workflow example
 
-`example.review` is the removable reference package for Cerebral's persistent service-workflow and native-desktop contracts. It has two independently loadable components with the same package identity and semantic version `1.0.0`:
+A small **model-independent text measurement workflow** for learning Cerebral's durable workflow/plugin APIs. It asks two questions, measures the supplied text, persists a receipt and returns the result. This is not an AI code reviewer.
 
-- `Cerebral.ReviewPlugin.csproj` builds the Worker service module described by `service-plugin.json`.
-- `Desktop/Cerebral.ReviewPlugin.Desktop.csproj` builds the trusted WPF contribution described by `Desktop/desktop-plugin.json`.
+| Component | Package version | Artifact |
+| --- | --- | --- |
+| Service `example.review` | 1.0.0 | `Cerebral.ReviewPlugin.dll` + `service-plugin.json` |
+| Desktop companion `example.review` | 1.0.0 | `Cerebral.ReviewPlugin.Desktop.dll` + `Desktop/desktop-plugin.json` |
 
-The package is trusted native code, not a sandbox. It registers no legacy model tools and grants no authority. Its workflow and command require the saved profile capability `diagnostics`.
+The native companion explicitly selects workflow `example.review:review` **1.0.0**. The service exposes workflow command `example.review:measure` version 1, not a general model tool.
 
-## Published contribution
+## Build and load both parts
 
-The service contributes workflow `example.review:review` version `1.0.0` with input `{ "text": "A short sample." }`. It asks two separately identified fields:
-
-- `label`: required free text.
-- `style`: required choice, `concise` or `detailed`.
-
-The portable package setting `defaultStyle` uses the same two choices and defaults to `concise`. It contains no credential and is snapshotted by the host at workflow admission.
-
-After the exact question revision is answered, deterministic command `example.review:measure` version `1` counts whitespace-delimited words and Unicode scalar characters. It owns `review.db` inside the package data directory and commits one `review_receipts` row keyed by the Engine effect ID. The command returns the durable record ID/revision, chosen label/style and measured counts. A repeated effect with the same run, request and arguments returns the committed receipt; reuse with different material is a conflict. Reconciliation only reads that row and never starts a new mutation. Cancellation is honored before the transaction begins. Failed or inconsistent operations produce a failed workflow rather than a success-shaped result.
-
-The desktop contribution adds a right-side **Review** panel and **Review draft** composer action. The action captures the current draft, leaves it unchanged, and submits the explicit `example.review:review` target through `IDesktopNativeWorkflowHost`. The short visible request and private assignment remain separate. An empty draft is handled locally. Disablement disposes the contribution; a retained action is denied by the released host lease.
-
-`UserText`, hidden assignment text and accepted attachment references are Engine-owned state. Attachment bytes remain in the attachment store and are not copied into plugin state or the visible request. The example command measures its explicit workflow input; it does not claim to read attachment contents, estimate model tokens, invoke a model, or prove an external operation.
-
-## Build and stage
-
-Build both projects with the installed .NET SDK. The service output includes its manifest, managed/native SQLite dependencies and dependency metadata. Stage the complete service output in a Worker service-package directory named exactly `example.review`; the directory and manifest IDs must match. Stage the desktop output through Configuration's normal desktop-package catalog. Host SDK assemblies resolve to the Worker's or desktop host's already loaded `Cerebral.Core`, `Cerebral.Contracts` and `Cerebral.Desktop.PluginSdk` identities.
-
-Package activation is explicit. Copying a DLL into a running Worker does not activate it, and an owner-reviewed desktop update uses the immutable-generation catalog rather than overwriting loaded files. A paused workflow pins its service definition version until it is resumed, abandoned, or explicitly upgraded.
-
-Use live `sdk.discover` and `sdk.describe` for the current submission, answer and inspection schemas. Submit once with a stable request ID. Retain the returned run ID plus question-set ID/revision for answers and reuse the entire request when reconciling an uncertain acknowledgement.
-
-## Acceptance entrypoints
-
-After a Release build:
+Requires .NET 10; the desktop companion additionally requires Windows x64/WPF and the compatible desktop SDK.
 
 ```powershell
-dotnet tests/Cerebral.Worker.Tests/bin/Release/net10.0/Cerebral.Worker.Tests.dll --workflow-worker-only
-dotnet tests/Cerebral.Worker.Tests/bin/Release/net10.0/Cerebral.Worker.Tests.dll --workflow-live-only
-dotnet tests/Cerebral.Desktop.Tests/bin/Release/net10.0-windows/Cerebral.Desktop.Tests.dll examples/Cerebral.WorkspacePlugin/bin/Release/net10.0-windows/desktop-plugin.json examples/Cerebral.DictationPlugin/bin/Release/net10.0-windows/desktop-plugin.json examples/Cerebral.BookPlugin/bin/Release/net10.0-windows/desktop-plugin.json examples/Cerebral.ReviewPlugin/Desktop/bin/Release/net10.0-windows/desktop-plugin.json
+dotnet build .\examples\Cerebral.ReviewPlugin\Cerebral.ReviewPlugin.csproj -c Release
+dotnet build .\examples\Cerebral.ReviewPlugin\Desktop\Cerebral.ReviewPlugin.Desktop.csproj -c Release
 ```
 
-The in-process Worker lane verifies schemas, authorization, questions, exact answer retry and one SQL mutation. The live lane starts a real Worker over loopback HTTP, imports a real text attachment as typed supplemental content, submits the workflow, kills/restarts the Worker, verifies the same form and attachment coordinate, answers it, retries the answer and verifies exactly one package-owned SQL row. The desktop lane creates real WPF contributions, checks the native route and draft isolation, then disables the package and verifies that retained access is revoked. These deterministic checks do not establish configured-model generation, a shown-window user interaction, installation, or Cerebral's final agent-authored self-build acceptance.
+Run from the repository root. With default output layout, service output uses `bin/Release/net10.0/`; the companion uses its own `Desktop/bin/Release/net10.0-windows/`. Preserve the service dependencies, including Microsoft.Data.Sqlite **10.0.10** and SQLitePCLRaw **2.1.13**.
+
+The service uses host package **stage/inspect/activate**, drains active durable pins as required, and needs a normal Worker restart before the selected generation is observed. Configuration → **Service extensions** is the loaded inventory; **Package commands** opens the advanced owner console. See [PLUGINS](../../docs/PLUGINS.md).
+
+Install the companion separately through Configuration → **Desktop plugins → Install…**, then **Manage → Enable → Go**. Refresh or reopen Main if needed. Enabling only the companion cannot supply the missing service workflow.
+
+## Try the example
+
+1. Connect Main to the Worker with the loaded service package and the necessary `diagnostics` workflow capability.
+2. Enter nonempty text in the composer.
+3. Choose **Review draft** or open the **Review** panel and its review action.
+4. Answer the durable questions: a label and **concise** or **detailed** presentation style.
+5. Inspect the resulting word count, character count and saved measurement receipt.
+
+The companion captures the current draft with its conversation binding and leaves the composer unchanged. The workflow accepts at most 32,768 text characters; labels are bounded to 200. Words are whitespace-delimited and characters are Unicode scalar values including whitespace. These are measured counts, **not model tokens**.
+
+## Settings, persistence and privacy
+
+The service manifest declares optional portable field `defaultStyle` with `concise/detailed` values. The actual workflow in this source still asks for style and consumes that answer; do not assume this field silently changes the questions or creates a separate settings UI.
+
+Durable workflow input/questions belong to the host's workflow store. Plugin-private `review.db` stores measurement receipts keyed by effect identity, including label, style, counts and summary; its receipt table does not store the full input text. That does not mean the host's accepted workflow input omits the text.
+
+No inference model, network request or general file/process tool is needed for measurement. The service writes its receipt database. Reconciliation reads the saved receipt; absence is Unknown, not an invitation to invent a result.
+
+## Troubleshooting
+
+- **Native workflows unsupported / definition missing:** inspect host SDK compatibility and the service inventory; the desktop plugin cannot add Worker workflows by itself.
+- **Empty or oversized draft / invalid style:** correct the bounded input and answer one of the declared styles.
+- **Unconfirmed submission:** inspect the conversation/workflow before trying again. The run may already exist, and this companion does not automatically resend after a lost acknowledgement.
+- **No matching measurement receipt after interruption:** preserve the Unknown result and use the supported workflow inspection/reconciliation path.
+
+Source: [ExampleReviewPlugin.cs](ExampleReviewPlugin.cs), [service manifest](service-plugin.json), [desktop source](Desktop/ExampleReviewDesktopPlugin.cs), [desktop manifest](Desktop/desktop-plugin.json). SQLite and other dependencies retain their own notices.
+
+## Preview and license
+
+These instructions describe the published source. This documentation pass did not restore, compile, install or run the plugin; it is not a fresh-checkout or installed-runtime qualification. Use a host built from a compatible SDK and retain integrity/permission checks when diagnosing failures.
+
+First-party code is covered by the [Pegasus Community License 1.0](../../LICENSE); third-party components retain their own terms. Created by Shayne Winter with development assistance from OpenAI Codex and Pegasus Cerebral. See [plugin lifecycle and permissions](../../docs/PLUGINS.md) and [building Cerebral](../../docs/BUILD.md).

@@ -1,45 +1,63 @@
-# Skills for Pegasus Cerebral
+# Skills manager
 
-Optional desktop manager over Cerebral's existing instruction-skills catalog. No new tools, dispatcher, service, model, permissions or credential store.
+Manage reusable **instruction documents** for Cerebral: discover local definitions, preview them, install them disabled, then enable them for an explicit scope. A skill does not add tools, permissions, model access or a new execution service.
 
-Open the **Skills** action in Main or the plugin's **Skills** Configuration page. The current folder paths, Worker installation identity, last scan, watcher state and validation errors are visible. Existing Configuration → Instruction skills remains a management fallback.
+**Desktop package:** `pegasus.skills`, version **0.1.0**, **disabled by default**.
 
-## Folders and availability
+## Build and enable the manager
 
-- Bundled definitions are read from the replaceable plugin payload's Skills/ subfolders. Normal UI never writes there.
-- Editable/imported definitions use the SDK-selected plugin DataDirectory/Skills. The normal installed default follows Cerebral's selected user-data root under ProgramData; explicit, private, source and portable roots remain selected exactly as provided by the host. No path is hardcoded or repointed.
-- Startup/manual scans and the debounced watcher discover additions, changes and removals. Watching requires the desktop host; closing the floating manager or unloading its view pauses watching. Reopening resumes it. There is no Worker daemon.
-- Discovery populates the manager only. **Install** admits the definition disabled and unassigned. **Enable** uses an explicit global, role, profile or project assignment. Roles are exactly lead/helper/compactor. Keep assignments preserves existing scope; selecting a scope explicitly replaces it.
-- Valid file updates preserve saved enablement and bindings. Missing/invalid owned sources are disabled when observed; after fixing them, explicitly Enable. External catalog edits are checked by revision/source/content and are not overwritten automatically.
-- Uninstall stays uninstalled across scans and package-version paths. Bundled skill exclusions use stable origin/ID. External owner removal is not undone. Explicit Install clears the selected exclusion.
-- Disabling/closing this manager stops its watcher, without disabling/removing already persisted skills. Core per-skill settings remain authoritative.
+Requires Windows x64, .NET 10 and compatible Core/desktop-plugin SDK assemblies from this source tree.
 
-Each skill normally has skill.json (the existing schemaVersion/id/name/version/description/triggers SkillManifest) and SKILL.md. SKILL.md-only folders can be indexed from scalar name/description metadata; installation preserves the derived stable identity in the private index. JSON IDs/version metadata travel with export.
+```powershell
+dotnet build .\examples\Cerebral.SkillsPlugin\Cerebral.SkillsPlugin.csproj -c Release
+```
 
-## Supported documents and assets
+Run from the repository root. Keep the native DLL, copied `desktop-plugin.json` and the complete bundled `Skills/` directory from default `bin/Release/net10.0-windows/` output. The host supplies Core and its SDK.
 
-Markdown is strict UTF-8, at most 32 KiB. Manifest JSON is at most 64 KiB. Frontmatter supports documented scalar keys: name, description, id, version, triggers, assets, license, author, origin. Values are plain text, single quotes, JSON-compatible double quotes, or two-space-indented literal/folded blocks. Trigger/asset lists are comma/semicolon/newline-separated scalars. Nested YAML, collections, tags, aliases, extra keys and duplicate keys are rejected with a validation error. This is deliberately not a full YAML parser.
+In Configuration → **Desktop plugins**, **Install…** the built manifest/package, review installation disabled, then select **Manage → Enable → Go**. Open Main's **Skills** composer action or the plugin's **Skills** Configuration page. Refresh or reopen the relevant desktop host if its view is not active. Loading the manager does not need a Worker restart, but it needs a connected Worker with the existing `skills.*` catalog operations.
 
-Declared assets are passive .md/.txt/.json/.csv/.tsv/.yaml/.yml documents or .png/.jpg/.jpeg/.gif/.webp images, at most 32 per skill and 1 MiB each. Relative paths are bounded and links/traversal/reserved names are refused. Assets do not confer file access or command rights; agents continue using only existing allowed file/tool routes. No scripts/hooks/installers are executed or registered.
+## Install and assign a skill
 
-## Groups and safe changes
+1. **Refresh** and read the displayed editable/bundled roots, Worker identity, last scan and validation errors.
+2. Select a definition to preview its actual text, identity/version and declared assets. Search/group filters narrow the list; **Select group / results** selects the current results.
+3. Choose **Install selected**. A new catalog installation stays **disabled and unassigned**.
+4. Select an **Enable scope**: global, role, profile or project. Role values are exactly `lead`, `helper`, `compactor`; profile/project scopes require exact IDs. **Keep assignments**, the default, retains existing bindings rather than inventing a scope.
+5. Choose **Enable selected**. **Disable selected** keeps definitions and assignments stored; **Uninstall selected…** removes the exact owned catalog record.
 
-Filter/search, select results, and use the bulk controls for install/enable/disable/uninstall. Save a selection as a named group. Import previews every ID conflict with Keep, Replace or SideBySide choices. Replace preserves current enablement/bindings; a new ID installs disabled. A case-only collision cannot be replaced. The group records per-item outcomes, including unattempted items after failure; it does not promise an atomic multi-skill Worker transaction.
+Discovery alone does not install a new file or authorize its instructions. Once a source is installed/owned, observed valid edits can update it while preserving its existing enablement/bindings. Missing or invalid owned source disables that skill; fix it and explicitly enable again. External catalog changes are checked, not overwritten blindly.
 
-Group ZIPs contain only group.json, skills/<id>/skill.json, SKILL.md and explicitly declared passive assets. The shared Core BoundedContentZipArchive handle validates names/links/collisions, bounds actual reads and extracts the same retained archive only after preview to an owned empty temporary directory. Domain limits are 128 skills, 512 files and 16 MiB expanded. No code-package admission is bypassed. Imported content uses a new private data subfolder; replaced source copies remain preserved rather than overwritten.
+## Folders, documents and groups
 
-Exports contain selected definitions and all declared assets, including mandatory license/source notices for derived bundled defaults. They exclude application settings, credentials, history, permission records and unknown files. Review authored text before export: an arbitrary document can itself contain a secret. Export never writes into the plugin code payload.
+Bundled definitions live in the package's read-only `Skills/` tree. Editable/imported definitions use the host-selected plugin data directory's `Skills/` tree. Use the paths displayed in the manager; do not edit immutable code-package generations or hardcode another machine's data path.
 
-Uninstall removes only the exact owned catalog record after current installation/revision/source/content checks. Optional file removal is limited to unchanged import-owned files. Bundled, modified and unknown files are preserved; no recursive user-data deletion occurs.
+A definition normally has `skill.json` plus `SKILL.md`. SKILL.md-only sources can use supported scalar metadata. Markdown is strict UTF-8, at most 32 KiB; manifest JSON is at most 64 KiB. The parser supports a bounded scalar frontmatter subset, not general YAML.
 
-A different Worker installation requires explicit connection review. An old ownership index is not authority over a foreign catalog. Lost/invalid mutation replies remain visibly unconfirmed and are never retried automatically; Refresh can confirm a matching install/configuration outcome. Unconfirmed removal is retained for original-owner inspection, without inferring success from temporary absence.
+Declared assets are passive document/image files, at most 32 per skill and 1 MiB each. Scripts, hooks and installers are not run. Links, traversal and unsupported fields produce validation errors.
 
-## Included base and licensing
+**Save selection as group** persists a local named selection. **Import group…** previews conflicts with Keep, Replace or SideBySide decisions. Replacement preserves current enablement/assignments; new identities stay disabled. Imports report per-item outcomes and are not an atomic multi-skill transaction. ZIP admission is bounded to 128 skills, 512 files and 16 MiB expanded.
 
-CerebralBase bundles eight Cerebral-adapted disciplines: requirements clarification, diagnosis, test-driven changes, code design, review, primary-source research, verified handoff, and agent guidance writing. Source: Matt Pocock's skills repository, pinned at abeeaf95660ba9e8b7c753eb38f441ca707a8823. Copyright (c) 2026 Matt Pocock; MIT. Each skill includes the full unchanged LICENSE.txt and attribution; see Skills/THIRD-PARTY-NOTICES.md for original paths/blobs and adaptation/exclusion notes. No automatic upstream download/update occurs.
+**Export group…** includes selected definitions, declared assets and mandatory license notices. It excludes application configuration/history/permission records, but authored text or assets can themselves contain sensitive information: review them before sharing.
 
-## Integration and evidence boundary
+## Persistence and safety
 
-The host supplies Core and the desktop SDK. Source/package this plugin through the existing Cerebral plugin installer; no installed hand-copy is part of this work. The shared archive API and Worker live skill-input fence must ship in the coordinated maintained source/build. The manager does not add those host features or erase previously received agent context.
+The private manager index records source ownership, exclusions, groups and pending outcomes. The Worker's core skill catalog owns actual enabled state and bindings. Closing/disabling the manager stops its watcher; it does **not** disable previously installed skills or erase instructions already accepted into a run.
 
-This source unit and its focused fixtures are not installed acceptance. Build/test execution, real UI/Worker behavior, packaging and activation require the coordinator's released verification/deployment phase. No live model, actual user-data, registry, ACL or service action is needed by the focused synthetic fixtures.
+The debounced watcher operates while the manager is mounted. **Refresh** remains available if watcher events are lost. Intentionally uninstalled definitions are not silently reinstalled by a scan. Optional uninstall file cleanup is limited to unchanged import-owned files; bundled, modified and unknown files are preserved.
+
+## Troubleshooting and bundled licenses
+
+- **Different Worker / connection review required:** use **Review connection…** and verify the intended installation. An old index grants no authority over another catalog.
+- **Invalid document:** inspect the row diagnostic; fix encoding, metadata, size or asset declarations, then Refresh.
+- **Cannot enable:** install first and choose an explicit valid assignment.
+- **Unconfirmed install/configure/remove:** inspect the original owner/catalog. Do not delete the index or replay a mutation to conceal uncertainty.
+- **Manager disabled but skill still influences new work:** inspect the Worker's per-skill enabled state; manager availability and skill enablement are separate.
+
+The bundled CerebralBase contains eight adapted engineering disciplines. Their source and MIT attribution are documented in [Skills/THIRD-PARTY-NOTICES.md](Skills/THIRD-PARTY-NOTICES.md); each retains its upstream license asset. The manager does not fetch upstream updates automatically.
+
+Source: [SkillsPlugin.cs](SkillsPlugin.cs), [SkillsManager.cs](SkillsManager.cs), [SkillDocument.cs](SkillDocument.cs), [SkillFolderCatalog.cs](SkillFolderCatalog.cs), [SkillGroups.cs](SkillGroups.cs), [desktop manifest](desktop-plugin.json).
+
+## Preview and license
+
+These instructions describe the published source. This documentation pass did not restore, compile, install or run the plugin; it is not a fresh-checkout or installed-runtime qualification. Use a host built from a compatible SDK and retain integrity/permission checks when diagnosing failures.
+
+First-party code is covered by the [Pegasus Community License 1.0](../../LICENSE); third-party components retain their own terms. Created by Shayne Winter with development assistance from OpenAI Codex and Pegasus Cerebral. See [plugin lifecycle and permissions](../../docs/PLUGINS.md) and [building Cerebral](../../docs/BUILD.md).
