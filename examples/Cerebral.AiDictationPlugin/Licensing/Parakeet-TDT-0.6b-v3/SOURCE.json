@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "publisher": "NVIDIA",
+  "modelId": "nvidia/parakeet-tdt-0.6b-v3",
+  "revision": "541d1f99c6b0c3cd0b11a95167540bb8edefd82b",
+  "artifact": "parakeet-tdt-0.6b-v3.q8_0.gguf",
+  "bytes": 713975456,
+  "upstreamSha256": "e3880d0aaaaf2c308ea2c35016b2b895c423eb3fda924c1b463d1c19b7f4d32e",
+  "source": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3",
+  "download": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3/resolve/541d1f99c6b0c3cd0b11a95167540bb8edefd82b/parakeet-tdt-0.6b-v3.q8_0.gguf",
+  "modelCardSource": "https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3/blob/541d1f99c6b0c3cd0b11a95167540bb8edefd82b/README.md",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseTextSource": "https://creativecommons.org/licenses/by/4.0/legalcode.txt",
+  "modifications": "None; publisher GGUF used unchanged.",
+  "weightsIncludedInThisLicensingDirectory": false
+}

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Cerebral.Desktop/Cerebral.Desktop.csproj" />
+    <ProjectReference Include="../../examples/Cerebral.AppearanceThemePlugin/Cerebral.AppearanceThemePlugin.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../src/Cerebral.Orchestrator/ConfigurationLaunchEntry.cs" Link="ConfigurationLaunchEntry.cs" />
+    <Compile Include="../../src/Cerebral.Orchestrator/ComposerDraftPresentation.cs" Link="ComposerDraftPresentation.cs" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(CerebralIncludeBooks)' == 'true'">
+    <DefineConstants>$(DefineConstants);CEREBRAL_BOOKS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CerebralIncludeBooks)' != 'true'">
+    <Compile Remove="BooksDesktopPluginChecks.cs" />
+  </ItemGroup>
+</Project>

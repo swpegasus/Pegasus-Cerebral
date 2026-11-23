@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>1.2.4</Version>
+    <Description>Optional owner-selected communication style presets for the Cerebral lead role</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" Condition="'$(CerebralSdkProfile)' == ''" />
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="Cerebral.PersonalityPlugin.Tests" />
+    <Compile Remove="Service\**\*.cs" />
+    <None Remove="Service\**\*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkProfile)' == 'installed-20261121'">
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(CerebralSdkDirectory)/Cerebral.Desktop.Plugins.dll</HintPath><Private>false</Private></Reference>
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Desktop.Plugins.dll" ExpectedSha256="d929ce7b56b1a1f10866fe7546035c8b60d9e65d45c37954eea6cd286e2ad0ef" />
+  </ItemGroup>
+  <Target Name="VerifyPersonalityCurrentSdk" BeforeTargets="PrepareForBuild;ResolveAssemblyReferences" Condition="'$(CerebralSdkProfile)' != ''">
+    <Error Condition="'$(CerebralSdkProfile)' != 'installed-20261121'" Text="Unknown CerebralSdkProfile. Use installed-20261121 or leave it empty for the existing build modes." />
+    <Error Condition="'$(CerebralSdkDirectory)' == '' or !Exists('$(CerebralSdkDirectory)')" Text="The installed-20261121 profile requires an existing CerebralSdkDirectory." />
+    <GetFileHash Files="@(PersonalityCurrentSdk)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="PersonalityCurrentHashedSdk" /></GetFileHash>
+    <Error Condition="'%(PersonalityCurrentHashedSdk.FileHash)' != '%(PersonalityCurrentHashedSdk.ExpectedSha256)'" Text="Current installed SDK input changed: %(PersonalityCurrentHashedSdk.Identity)" />
+  </Target>
+</Project>

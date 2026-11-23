@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 2,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "example.review",
+  "name": "Cerebral Review Workflow Example",
+  "version": "1.0.0",
+  "description": "A model-independent example with two persisted questions and a read-only text measurement command.",
+  "assembly": "Cerebral.ReviewPlugin.dll",
+  "entryType": "Cerebral.ReviewPlugin.ExampleReviewPlugin",
+  "portableSettings": {
+    "version": 1,
+    "fields": [
+      {
+        "name": "defaultStyle",
+        "type": "string",
+        "required": false,
+        "maximumUtf8Bytes": 16,
+        "allowedValues": [ "concise", "detailed" ]
+      }
+    ]
+  }
+}

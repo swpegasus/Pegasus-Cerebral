@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(ResourcePauseSdkRoot)' == ''">
+    <ProjectReference Include="../../examples/Cerebral.ResourcePausePlugin/Cerebral.ResourcePausePlugin.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(ResourcePauseSdkRoot)' != ''">
+    <Reference Include="Cerebral.Core, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(ResourcePauseSdkRoot)/Cerebral.Core.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+    <Reference Include="Cerebral.Contracts, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(ResourcePauseSdkRoot)/Cerebral.Contracts.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+    <Reference Include="Cerebral.Desktop.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(ResourcePauseSdkRoot)/Cerebral.Desktop.Plugins.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+    <Reference Include="Cerebral.ResourcePausePlugin, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(ResourcePauseCandidateRoot)/Cerebral.ResourcePausePlugin.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+    <ResourcePauseSdkPin Include="$(ResourcePauseSdkRoot)/Cerebral.Core.dll" ExpectedSha256="441acbbeb0ea32ca07955d82632a88c2fc3332167d3e0822851de811b06c1098" />
+    <ResourcePauseSdkPin Include="$(ResourcePauseSdkRoot)/Cerebral.Contracts.dll" ExpectedSha256="25ecb90dd4de31e013f2043fba3e4fae636f457e57ce5f47e416f1e0df92358a" />
+    <ResourcePauseSdkPin Include="$(ResourcePauseSdkRoot)/Cerebral.Desktop.Plugins.dll" ExpectedSha256="f8d0ac9e6060a50184585ecdccec0a8f937242e77993f86f459c001dd9f66e82" />
+    <ResourcePauseSdkPin Include="$(ResourcePauseSdkRoot)/Cerebral.Engine.Contracts.dll" ExpectedSha256="b74b2a169e343ff9d9f642ff9a63afe7e89ad3d3045ce9ee199dfa4645033e32" />
+    <ResourcePauseSdkPin Include="$(ResourcePauseCandidateRoot)/Cerebral.ResourcePausePlugin.dll" ExpectedSha256="$(ResourcePauseCandidateSha256)" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(ResourcePauseSdkRoot)' != ''"><ProvideCommandLineArgs>true</ProvideCommandLineArgs></PropertyGroup>
+  <Target Name="VerifyResourcePauseSdk" BeforeTargets="ResolveAssemblyReferences" Condition="'$(ResourcePauseSdkRoot)' != ''">
+    <Error Condition="'$(ResourcePauseCandidateRoot)' == '' Or '$(ResourcePauseCandidateSha256)' == ''" Text="The exact qualified Resource Pause candidate directory and hash are required." />
+    <GetFileHash Files="@(ResourcePauseSdkPin)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="ResourcePauseSdkHash" /></GetFileHash>
+    <Error Condition="'%(ResourcePauseSdkHash.FileHash)' != '%(ResourcePauseSdkHash.ExpectedSha256)'" Text="Resource Pause fixture input mismatch: %(ResourcePauseSdkHash.Identity)" />
+  </Target>
+  <Target Name="CaptureResourcePauseCompilerInputs" AfterTargets="CoreCompile" Condition="'$(ResourcePauseSdkRoot)' != ''">
+    <MakeDir Directories="$(IntermediateOutputPath)qualification" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)qualification/compile-inputs.txt" Lines="@(Compile->'%(FullPath)')" Overwrite="true" Encoding="UTF-8" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)qualification/reference-paths.txt" Lines="@(ReferencePathWithRefAssemblies->'%(FullPath)')" Overwrite="true" Encoding="UTF-8" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)qualification/compiler-arguments.txt" Lines="@(CscCommandLineArgs)" Overwrite="true" Encoding="UTF-8" />
+  </Target>
+</Project>

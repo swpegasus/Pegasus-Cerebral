@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework><Version>0.2.0</Version><AssemblyName>Cerebral.ConversationTitlePlugin</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
+    <CerebralSourceRoot Condition="'$(CerebralSourceRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildThisFileDirectory)', 'Pegasus.Cerebral.slnx'))</CerebralSourceRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs;TitlePackageIdentity.cs;TitleSettingsPolicy.cs;TitlePolicy.cs;TitleSourceBoundInput.cs;ConversationTitlePlugin.cs;SourceBoundConversationTitleWorkflow.cs" />
+    <None Update="service-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkDirectory)' == ''">
+    <ProjectReference Include="$(CerebralSourceRoot)/src/Cerebral.Core/Cerebral.Core.csproj" Private="false" />
+    <ProjectReference Include="$(CerebralSourceRoot)/src/Cerebral.Contracts/Cerebral.Contracts.csproj" Private="false" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkDirectory)' != ''">
+    <Reference Include="Cerebral.Core"><HintPath>$(CerebralSdkDirectory)/Cerebral.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Cerebral.Contracts"><HintPath>$(CerebralSdkDirectory)/Cerebral.Contracts.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="RequireMatchingCohort" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(CerebralSdkDirectory)' == '' And !Exists('$(CerebralSourceRoot)/src/Cerebral.Core/Cerebral.Core.csproj')" Text="Current-source SDK mode requires the selected Cerebral source root." />
+    <Error Condition="'$(CerebralSdkDirectory)' != '' And (!Exists('$(CerebralSdkDirectory)/Cerebral.Core.dll') Or !Exists('$(CerebralSdkDirectory)/Cerebral.Contracts.dll'))" Text="Explicit SDK mode requires matching reviewed Core/Contracts DLLs; no source-bin fallback." />
+  </Target>
+</Project>

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.personality",
+  "name": "Personality Presets",
+  "version": "1.2.4",
+  "description": "Native per-chat personality selection with optional candid mode, saved chat choices, and advanced shared-style editing.",
+  "assembly": "Cerebral.PersonalityPlugin.dll",
+  "entryType": "Cerebral.PersonalityPlugin.PersonalityPlugin",
+  "dependencies": [],
+  "defaultEnabled": false,
+  "exclusiveGroup": "pegasus.personality",
+  "exclusivePriority": 0
+}

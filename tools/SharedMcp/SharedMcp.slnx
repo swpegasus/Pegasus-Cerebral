@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SharedMcp/SharedMcp.csproj" />
+  <Project Path="SharedMcp.Stdio/SharedMcp.Stdio.csproj" />
+  <Project Path="CerebralBackend/CerebralBackend.csproj" />
+  <Project Path="DevHost/DevHost.csproj" />
+  <Project Path="Tests/Tests.csproj" />
+</Solution>

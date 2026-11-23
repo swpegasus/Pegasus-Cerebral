@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.skills",
+  "name": "Skills",
+  "version": "0.1.0",
+  "description": "Manage bounded instruction skills, folder discovery and content-only groups without adding tool permissions.",
+  "assembly": "Cerebral.SkillsPlugin.dll",
+  "entryType": "Cerebral.SkillsPlugin.SkillsPlugin",
+  "dependencies": [],
+  "defaultEnabled": false,
+  "exclusiveGroup": "pegasus.skills-manager",
+  "exclusivePriority": 0
+}

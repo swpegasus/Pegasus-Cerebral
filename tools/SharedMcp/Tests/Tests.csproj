@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../SharedMcp.Stdio/SharedMcp.Stdio.csproj" /></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/Cerebral.Client/Cerebral.Client.csproj" />
+    <Compile Include="../../../src/Cerebral.Worker/OperatorMcpHost.cs" Link="OperatorMcpHost.cs" />
+    <Compile Include="../DevHost/WindowsCertificateReference.cs" Link="WindowsCertificateReference.cs" />
+  </ItemGroup>
+</Project>

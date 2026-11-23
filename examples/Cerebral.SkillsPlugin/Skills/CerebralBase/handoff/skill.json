@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.handoff",
+  "name": "Hand off verified work",
+  "version": "1.0.0",
+  "description": "Create a bounded continuation brief with verified state, ownership, limits and the next authorized action.",
+  "triggers": [
+    "prepare a handoff",
+    "continue in another task",
+    "summarize verified progress"
+  ]
+}

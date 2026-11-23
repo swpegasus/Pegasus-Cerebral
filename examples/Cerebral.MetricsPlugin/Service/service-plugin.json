@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.metrics",
+  "name": "Cerebral Metrics",
+  "version": "0.2.0",
+  "description": "Optional instrumented-generation scalar history and owner dashboard queries; capture defaults off. Requires the qualified scalar host facet.",
+  "assembly": "Cerebral.MetricsPlugin.Service.dll",
+  "entryType": "Cerebral.MetricsPlugin.Service.MetricsServicePlugin",
+  "requiredHostFacets": [
+    "cerebral.service.scalar-generation/1"
+  ]
+}

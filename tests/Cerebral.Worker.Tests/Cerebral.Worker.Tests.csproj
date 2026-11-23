@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/Cerebral.Worker/Cerebral.Worker.csproj" /><ProjectReference Include="../../src/Cerebral.Books/Cerebral.Books.csproj" Condition="'$(CerebralIncludeBooks)' == 'true'" /><ProjectReference Include="../../src/Cerebral.Programming/Cerebral.Programming.csproj" /><ProjectReference Include="../../examples/Cerebral.ReviewPlugin/Cerebral.ReviewPlugin.csproj" /><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
+  <PropertyGroup Condition="'$(CerebralIncludeBooks)' == 'true'">
+    <DefineConstants>$(DefineConstants);CEREBRAL_BOOKS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CerebralIncludeBooks)' != 'true'">
+    <Compile Remove="BookWorkflowRepairTests.cs;BookWorkflowReviewTests.cs;BooksCanonDecisionWorkflowTests.cs;BooksChapterRepairWorkflowTests.cs;BooksChapterWorkflowTests.cs;BooksContextProviderWorkflowTests.cs;BooksDuplicateFeedbackTests.cs;BooksProfileSettingsPolicyTests.cs;BooksWorkflowOutputTests.cs;BooksWorkflowWriteTests.cs;BooksServicePluginTests.cs" />
+  </ItemGroup>
+  <ItemGroup><ProjectReference Include="../Cerebral.EngineFixture/Cerebral.EngineFixture.csproj" ReferenceOutputAssembly="false" /></ItemGroup>
+  <Target Name="CopyEngineHostFixtures" AfterTargets="Build">
+    <MSBuild Projects="../../src/Cerebral.Engine.Default/Cerebral.Engine.Default.csproj;../Cerebral.EngineFixture/Cerebral.EngineFixture.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)">
+      <Output TaskParameter="TargetOutputs" ItemName="_HostEngineFixtures" />
+    </MSBuild>
+    <Copy SourceFiles="@(_HostEngineFixtures)" DestinationFolder="$(TargetDir)EngineFixtures" />
+  </Target>
+</Project>

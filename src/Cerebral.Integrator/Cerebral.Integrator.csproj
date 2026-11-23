@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>../../assets/branding/cerebral-integrator.ico</ApplicationIcon>
+    <Product>Pegasus Cerebral</Product>
+    <AssemblyTitle>Pegasus Cerebral Configuration</AssemblyTitle>
+    <Description>Model, agent and service management</Description>
+    <Company>Pegasus</Company>
+  </PropertyGroup>
+  <ItemGroup><Using Remove="System.Windows.Forms" /><Using Remove="System.Drawing" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../Cerebral.Desktop/Cerebral.Desktop.csproj" /></ItemGroup>
+  <ItemGroup><Compile Include="../Cerebral.Desktop/RendererLayoutSession.cs" Link="RendererLayoutSession.cs" /></ItemGroup>
+</Project>
+

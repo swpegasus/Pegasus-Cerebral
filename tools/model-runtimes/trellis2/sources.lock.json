@@ -1,0 +1,27 @@
+{
+  "schema": "pegasus.trellis2.source-lock.v1",
+  "qualificationRequired": true,
+  "qualified": false,
+  "profile": "candidate-linux-arm64-sm121-cuda13",
+  "sources": [
+    {"name": "trellis2", "repository": "https://github.com/microsoft/TRELLIS.2.git", "revision": "75fbf0183001ed9876c8dbb35de6b68552ee08bd"},
+    {"name": "utils3d", "repository": "https://github.com/EasternJournalist/utils3d.git", "revision": "9a4eb15e4021b67b12c460c7057d642626897ec8"},
+    {"name": "flash_attention", "repository": "https://github.com/Dao-AILab/flash-attention.git", "revision": "060c9188beec3a8b62b33a3bfa6d5d2d44975fab", "upstreamTag": "v2.8.3"},
+    {"name": "nvdiffrast", "repository": "https://github.com/NVlabs/nvdiffrast.git", "revision": "253ac4fcea7de5f396371124af597e6cc957bfae", "upstreamTag": "v0.4.0"},
+    {"name": "nvdiffrec", "repository": "https://github.com/JeffreyXiang/nvdiffrec.git", "revision": "b296927cc7fd01c2ac1087c8065c4d7248f72da4"},
+    {"name": "cumesh", "repository": "https://github.com/JeffreyXiang/CuMesh.git", "revision": "12289e1062f0603f2f0d0771b02e1395d247f26f"},
+    {"name": "flexgemm", "repository": "https://github.com/JeffreyXiang/FlexGEMM.git", "revision": "6dd94a859c26ee8246888502eada3dd8ad85532e"}
+  ],
+  "models": {
+    "trellis2": {"repository": "microsoft/TRELLIS.2-4B", "revision": "af44b45f2e35a493886929c6d786e563ec68364d"},
+    "shape_decoder": {"repository": "microsoft/TRELLIS-image-large", "revision": "25e0d31ffbebe4b5a97464dd851910efc3002d96"},
+    "dinov3": {"repository": "facebook/dinov3-vitl16-pretrain-lvd1689m", "revision": "ea8dc2863c51be0a264bab82070e3e8836b02d51", "accessRequired": true},
+    "rmbg": {"repository": "briaai/RMBG-2.0", "revision": "2fd7b4b0f2393ddb39a267fb62df6c010928a6c6", "accessRequired": true}
+  },
+  "notes": [
+    "Exact source revisions, not moving branches or nightly packages. Native dependency commits are candidates, not GB10 execution evidence.",
+    "Choose an ARM64 NVIDIA CUDA>=13 devel/PyTorch base by digest after the real host probe; lock its exact Torch, Python, compiler and Triton versions.",
+    "Resolve the candidate direct Python requirements for that exact base into a complete hashed offline wheel lock before building.",
+    "Model files and access/license admission are separate installer responsibilities; mount their verified data inventory read-only."
+  ]
+}

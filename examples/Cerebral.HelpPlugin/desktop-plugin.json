@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.help",
+  "name": "Cerebral Help",
+  "version": "0.3.0",
+  "description": "Passive native Help navigation and content placeholders. Assistant connection is pending.",
+  "assembly": "Cerebral.HelpPlugin.dll",
+  "entryType": "Cerebral.HelpPlugin.HelpPlugin",
+  "dependencies": [],
+  "defaultEnabled": false,
+  "exclusiveGroup": "pegasus.help",
+  "exclusivePriority": 0
+}

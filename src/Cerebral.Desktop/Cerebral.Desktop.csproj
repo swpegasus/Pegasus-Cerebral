@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <ItemGroup><InternalsVisibleTo Include="Cerebral.Desktop.Tests" /></ItemGroup>
+  <ItemGroup Condition="'$(CerebralFrameworkReferenceDirectory)' == ''"><ProjectReference Include="../Cerebral.Client/Cerebral.Client.csproj" /><ProjectReference Include="../Cerebral.Contracts/Cerebral.Contracts.csproj" /><ProjectReference Include="../Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" /></ItemGroup>
+  <!-- A GUI-only update can compile against the installed framework without rebuilding its dependencies. -->
+  <ItemGroup Condition="'$(CerebralFrameworkReferenceDirectory)' != ''">
+    <Reference Include="Cerebral.Contracts"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Contracts.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Core"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Core.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Client"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Client.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Desktop.Plugins.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="../../assets/branding/*.ico" Link="Branding/%(Filename)%(Extension)" />
+    <Resource Include="../../assets/branding/cerebral/cerebral-splash-sidebar.png" Link="Branding/cerebral-splash-sidebar.png" />
+    <Resource Include="../../assets/branding/cerebral/cerebral-watermark.png" Link="Branding/cerebral-watermark.png" />
+  </ItemGroup>
+</Project>

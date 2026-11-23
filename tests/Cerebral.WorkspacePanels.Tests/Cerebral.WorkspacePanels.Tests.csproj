@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/Cerebral.Orchestrator/ConversationPanelStackState.cs" Link="Production/ConversationPanelStackState.cs" />
+  </ItemGroup>
+</Project>

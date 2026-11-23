@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Version>1.0.0</Version></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/Cerebral.Engine.Contracts/Cerebral.Engine.Contracts.csproj" /></ItemGroup>
+</Project>

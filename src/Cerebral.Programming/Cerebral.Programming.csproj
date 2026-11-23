@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies><SatelliteResourceLanguages>en</SatelliteResourceLanguages></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Cerebral.Contracts/Cerebral.Contracts.csproj" />
+    <ProjectReference Include="../Cerebral.Core/Cerebral.Core.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="[5.9.0]" ExcludeAssets="analyzers" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.13" />
+  </ItemGroup>
+  <ItemGroup><None Update="service-plugin.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" /></ItemGroup>
+  <ItemGroup>
+    <None Update="ThirdPartyNotices/Roslyn-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(PkgMicrosoft_CodeAnalysis_CSharp)/ThirdPartyNotices.rtf" Link="ThirdPartyNotices/Roslyn-ThirdPartyNotices.rtf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

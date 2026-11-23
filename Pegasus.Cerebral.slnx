@@ -1,0 +1,53 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Cerebral.Auditing/Cerebral.Auditing.csproj" />
+    <Project Path="src/Cerebral.Contracts/Cerebral.Contracts.csproj" />
+    <Project Path="src/Cerebral.Engine/Cerebral.Engine.csproj" />
+    <Project Path="src/Cerebral.Engine.Contracts/Cerebral.Engine.Contracts.csproj" />
+    <Project Path="src/Cerebral.Engine.Default/Cerebral.Engine.Default.csproj" />
+    <Project Path="src/Cerebral.Conversation/Cerebral.Conversation.csproj" />
+    <Project Path="src/Cerebral.Client/Cerebral.Client.csproj" />
+    <Project Path="src/Cerebral.Core/Cerebral.Core.csproj" />
+    <Project Path="src/Cerebral.Desktop/Cerebral.Desktop.csproj" />
+    <Project Path="src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" />
+    <Project Path="src/Cerebral.Integrator/Cerebral.Integrator.csproj" />
+    <Project Path="src/Cerebral.Orchestrator/Cerebral.Orchestrator.csproj" />
+    <Project Path="src/Cerebral.Programming/Cerebral.Programming.csproj" />
+    <Project Path="src/Cerebral.Speech/Cerebral.Speech.csproj" />
+    <Project Path="src/Cerebral.Tools/Cerebral.Tools.csproj" />
+    <Project Path="src/Cerebral.Worker/Cerebral.Worker.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Cerebral.Auditing.Tests/Cerebral.Auditing.Tests.csproj" />
+    <Project Path="tests/Cerebral.Engine.Tests/Cerebral.Engine.Tests.csproj" />
+    <Project Path="tests/Cerebral.EngineActivation.Tests/Cerebral.EngineActivation.Tests.csproj" />
+    <Project Path="tests/Cerebral.EngineFixture/Cerebral.EngineFixture.csproj" />
+    <Project Path="tests/Cerebral.Tools.Tests/Cerebral.Tools.Tests.csproj" />
+    <Project Path="tests/Cerebral.Desktop.Tests/Cerebral.Desktop.Tests.csproj" />
+    <Project Path="tests/Cerebral.AutoPromptPlugin.Tests/Cerebral.AutoPromptPlugin.Tests.csproj" />
+    <Project Path="tests/Cerebral.WorkspacePanels.Tests/Cerebral.WorkspacePanels.Tests.csproj" />
+    <Project Path="tests/Cerebral.Worker.Tests/Cerebral.Worker.Tests.csproj" />
+    <Project Path="tests/Cerebral.ProgrammingPlugin.Tests/Cerebral.ProgrammingPlugin.Tests.csproj" />
+    <Project Path="tests/Cerebral.Speech.Tests/Cerebral.Speech.Tests.csproj" />
+    <Project Path="tests/Cerebral.AiDictationPlugin.Tests/Cerebral.AiDictationPlugin.Tests.csproj" />
+    <Project Path="tests/Cerebral.BrowserPlugin.Tests/Cerebral.BrowserPlugin.Tests.csproj" />
+  </Folder>
+  <Folder Name="/examples/">
+    <Project Path="examples/Cerebral.AutoPromptPlugin/Cerebral.AutoPromptPlugin.csproj" />
+    <Project Path="examples/Cerebral.AppearanceThemePlugin/Cerebral.AppearanceThemePlugin.csproj" />
+    <Project Path="examples/Cerebral.ChatIconsPlugin/Cerebral.ChatIconsPlugin.csproj" />
+    <Project Path="examples/Cerebral.CollaborationPlugin/Cerebral.CollaborationPlugin.csproj" />
+    <Project Path="examples/Cerebral.ResourcePausePlugin/Cerebral.ResourcePausePlugin.csproj" />
+    <Project Path="examples/Cerebral.ReviewPlugin/Cerebral.ReviewPlugin.csproj" />
+    <Project Path="examples/Cerebral.ReviewPlugin/Desktop/Cerebral.ReviewPlugin.Desktop.csproj" />
+    <Project Path="examples/Cerebral.DictationPlugin/Cerebral.DictationPlugin.csproj" />
+    <Project Path="examples/Cerebral.AiDictationPlugin/Cerebral.AiDictationPlugin.csproj" />
+    <Project Path="examples/Cerebral.BrowserPlugin/Cerebral.BrowserPlugin.csproj" />
+    <Project Path="examples/Cerebral.ProgrammingPlugin/Cerebral.ProgrammingPlugin.csproj" />
+    <Project Path="examples/Cerebral.PromptReviewPlugin/Cerebral.PromptReviewPlugin.csproj" />
+    <Project Path="examples/Cerebral.GoalCardPlugin/Cerebral.GoalCardPlugin.csproj" />
+    <Project Path="examples/Cerebral.WorkspacePlugin/Cerebral.WorkspacePlugin.csproj" />
+    <Project Path="examples/Cerebral.ConversationTitlePlugin/Cerebral.ConversationTitlePlugin.csproj" />
+    <Project Path="examples/Cerebral.ConversationTitlePlugin/Desktop/Cerebral.ConversationTitlePlugin.Desktop.csproj" />
+  </Folder>
+</Solution>

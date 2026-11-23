@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>0.2.0</Version><AssemblyName>Cerebral.ConversationTitlePlugin.Desktop</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable>
+    <CerebralSourceRoot Condition="'$(CerebralSourceRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildThisFileDirectory)', 'Pegasus.Cerebral.slnx'))</CerebralSourceRoot>
+    <CerebralTitleSourceDirectory Condition="'$(CerebralTitleSourceDirectory)' == '' And Exists('$(MSBuildThisFileDirectory)../Service/TitlePackageIdentity.cs')">$(MSBuildThisFileDirectory)../Service</CerebralTitleSourceDirectory>
+    <CerebralTitleSourceDirectory Condition="'$(CerebralTitleSourceDirectory)' == ''">$(MSBuildThisFileDirectory)..</CerebralTitleSourceDirectory>
+    <CerebralSharedSourceDirectory Condition="'$(CerebralSharedSourceDirectory)' == ''">$(CerebralSourceRoot)/examples/Shared</CerebralSharedSourceDirectory>
+    <CerebralPreferenceSessionSourcePath Condition="'$(CerebralPreferenceSessionSourcePath)' == '' And Exists('$(MSBuildThisFileDirectory)../Shared/PackagePreferenceSession.cs')">$(MSBuildThisFileDirectory)../Shared/PackagePreferenceSession.cs</CerebralPreferenceSessionSourcePath>
+    <CerebralPreferenceSessionSourcePath Condition="'$(CerebralPreferenceSessionSourcePath)' == ''">$(CerebralSharedSourceDirectory)/PackagePreferenceSession.cs</CerebralPreferenceSessionSourcePath>
+    <CerebralDesktopSdkDirectory Condition="'$(CerebralDesktopSdkDirectory)' == '' And '$(CerebralSdkDirectory)' != ''">$(CerebralSdkDirectory)</CerebralDesktopSdkDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ConversationTitleDesktopPlugin.cs" />
+    <Compile Include="$(CerebralTitleSourceDirectory)/TitlePackageIdentity.cs;$(CerebralTitleSourceDirectory)/TitleSettingsPolicy.cs;$(CerebralTitleSourceDirectory)/TitlePolicy.cs" />
+    <Compile Include="$(CerebralPreferenceSessionSourcePath)" />
+    <Compile Include="$(CerebralSharedSourceDirectory)/PackageSettingsOwnerClient.cs;$(CerebralSharedSourceDirectory)/PackagePreferenceJson.cs;$(CerebralSharedSourceDirectory)/PackagePreferenceEditor.cs" />
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkDirectory)' == ''">
+    <ProjectReference Include="$(CerebralSourceRoot)/src/Cerebral.Core/Cerebral.Core.csproj" Private="false" />
+    <ProjectReference Include="$(CerebralSourceRoot)/src/Cerebral.Contracts/Cerebral.Contracts.csproj" Private="false" />
+    <ProjectReference Include="$(CerebralSourceRoot)/src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkDirectory)' != ''">
+    <Reference Include="Cerebral.Core"><HintPath>$(CerebralSdkDirectory)/Cerebral.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Cerebral.Contracts"><HintPath>$(CerebralSdkDirectory)/Cerebral.Contracts.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(CerebralDesktopSdkDirectory)/Cerebral.Desktop.Plugins.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <Target Name="RequireMatchingCohort" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(CerebralTitleSourceDirectory)/TitleSettingsPolicy.cs') Or !Exists('$(CerebralPreferenceSessionSourcePath)')" Text="Supply the reviewed title/shared source paths for this cohort." />
+    <Error Condition="'$(CerebralSdkDirectory)' == '' And !Exists('$(CerebralSourceRoot)/src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj')" Text="Current-source mode requires the selected Cerebral Core/Contracts/Desktop projects." />
+    <Error Condition="'$(CerebralSdkDirectory)' != '' And (!Exists('$(CerebralSdkDirectory)/Cerebral.Core.dll') Or !Exists('$(CerebralSdkDirectory)/Cerebral.Contracts.dll') Or !Exists('$(CerebralDesktopSdkDirectory)/Cerebral.Desktop.Plugins.dll'))" Text="Explicit SDK mode requires the matching reviewed Core/Contracts/Desktop DLL cohort." />
+  </Target>
+</Project>

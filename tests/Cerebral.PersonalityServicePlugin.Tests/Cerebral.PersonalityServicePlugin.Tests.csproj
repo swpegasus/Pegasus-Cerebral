@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+ <ItemGroup Condition="'$(CerebralPersonalityServiceCandidateDirectory)' == ''">
+  <ProjectReference Include="../../examples/Cerebral.PersonalityPlugin/Service/Cerebral.PersonalityServicePlugin.csproj" />
+ </ItemGroup>
+ <ItemGroup Condition="'$(CerebralPersonalityServiceCandidateDirectory)' != ''">
+  <Reference Include="Cerebral.PersonalityServicePlugin"><HintPath>$(CerebralPersonalityServiceCandidateDirectory)/Cerebral.PersonalityServicePlugin.dll</HintPath><Private>true</Private></Reference>
+ </ItemGroup>
+ <Target Name="VerifyPersonalityServiceCandidate" BeforeTargets="PrepareForBuild;ResolveAssemblyReferences" Condition="'$(CerebralPersonalityServiceCandidateDirectory)' != ''">
+  <Error Condition="!$([System.IO.Path]::IsPathFullyQualified('$(CerebralPersonalityServiceCandidateDirectory)'))" Text="The Personality service candidate directory must be absolute." />
+  <Error Condition="!Exists('$(CerebralPersonalityServiceCandidateDirectory)/Cerebral.PersonalityServicePlugin.dll')" Text="The explicitly selected Personality service candidate DLL is missing." />
+ </Target>
+ <ItemGroup Condition="'$(CerebralSdkDirectory)' == ''"><ProjectReference Include="../../src/Cerebral.Engine/Cerebral.Engine.csproj" /></ItemGroup>
+ <ItemGroup Condition="'$(CerebralSdkDirectory)' != ''">
+  <Reference Include="Cerebral.Core, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Core.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+  <Reference Include="Cerebral.Contracts, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Contracts.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+  <Reference Include="Cerebral.Engine, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Engine.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+  <Reference Include="Cerebral.Engine.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Engine.Contracts.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+ </ItemGroup>
+</Project>

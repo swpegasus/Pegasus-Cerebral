@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.research",
+  "name": "Research primary sources",
+  "version": "1.0.0",
+  "description": "Answer a scoped question from current authoritative sources with clear citations and uncertainty.",
+  "triggers": [
+    "research this topic",
+    "verify these API facts",
+    "find primary sources"
+  ]
+}

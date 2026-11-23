@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "resources": [
+    {
+      "id": "chromium-win-x64",
+      "kind": "tool",
+      "source": "Resources/Chromium",
+      "destination": "Browser/Chromium"
+    }
+  ]
+}

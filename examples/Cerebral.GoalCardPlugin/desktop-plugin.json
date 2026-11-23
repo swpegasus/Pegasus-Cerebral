@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.goal-card",
+  "name": "Conversation Goal",
+  "version": "1.0.0",
+  "description": "Original request and later instructions, read from the durable conversation journal.",
+  "assembly": "Cerebral.GoalCardPlugin.dll",
+  "entryType": "Cerebral.GoalCardPlugin.GoalCardPlugin",
+  "dependencies": [],
+  "defaultEnabled": true,
+  "exclusiveGroup": "pegasus.goal-card",
+  "exclusivePriority": 0
+}

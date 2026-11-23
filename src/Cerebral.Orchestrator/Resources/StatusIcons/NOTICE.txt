@@ -1,0 +1,4 @@
+Remix Icon v4.7.0, copyright Remix Design, Apache License 2.0. Original artwork bytes retained. Not the newly restricted 2026 license.
+Upstream: https://github.com/Remix-Design/RemixIcon
+Commit: 4ef50878f17accbed89ef2691bdc357562ed0a17
+No trademark or endorsement rights are represented.

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>0.1.2</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Condition="'$(DesktopPluginSdkPath)' == ''"
+      Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" />
+    <Reference Condition="'$(DesktopPluginSdkPath)' != ''"
+      Include="Cerebral.Desktop.Plugins" HintPath="$(DesktopPluginSdkPath)" Private="false" />
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

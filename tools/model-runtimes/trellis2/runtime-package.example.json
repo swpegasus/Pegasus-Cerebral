@@ -1,0 +1,24 @@
+{
+  "schema": "pegasus.trellis2.runtime-package.v1",
+  "state": "unqualified-example",
+  "hardwareQualificationRequired": true,
+  "imageReference": null,
+  "imageDigest": null,
+  "sourceLockSha256": "689fbc3e9d044d0410a814fff8569a7b8e94a29c090577d180340deb2146857b",
+  "sourceRevision": "75fbf0183001ed9876c8dbb35de6b68552ee08bd",
+  "entrypoint": ["python3", "-I", "-B", "/opt/trellis/runtime/runner.py", "--stdio"],
+  "requestSchema": "pegasus.trellis2.runtime-request.v1",
+  "eventSchema": "pegasus.trellis2.runtime-event.v1",
+  "pipelineCacheMax": 1,
+  "initialProfile": {"lowVram": true, "maxTextureSize": 4096, "maxNumTokens": 49152, "latentArtifacts": false},
+  "network": "none",
+  "mounts": [
+    {"role": "instance-input-parent", "containerPath": "/data/jobs", "readOnly": true},
+    {"role": "instance-result-parent", "containerPath": "/data/results", "readOnly": false},
+    {"role": "verified-model-data", "containerPath": "/models", "readOnly": true},
+    {"role": "instance-native-caches", "containerPath": "/cache", "readOnly": false}
+  ],
+  "tmpfs": ["/tmp"],
+  "user": "65532:65532",
+  "notes": "Lane-specific example, not an admitted host package or deployment receipt. Installer must provide real image identity, complete hashes and hardware/cancellation/unload qualification. The host owns CID, capacity, queue, authentication and idle policy."
+}

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Cerebral.MetricsPlugin.Tests</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="LifecycleReviewProgram.cs" />
+    <Reference Include="Cerebral.Core"><HintPath>$(MSBuildThisFileDirectory)successor-lifecycle-review/baseline/Tests/artifacts/bin/Cerebral.MetricsPlugin.Tests/release/Cerebral.Core.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(MetricsBaseline)' != 'true'">
+    <ProjectReference Include="../Service/Cerebral.MetricsPlugin.Service.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(MetricsBaseline)' == 'true'">
+    <Reference Include="Cerebral.MetricsPlugin.Service"><HintPath>$(MSBuildThisFileDirectory)successor-lifecycle-review/baseline/Tests/artifacts/bin/Cerebral.MetricsPlugin.Service/release/Cerebral.MetricsPlugin.Service.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.MetricsPlugin.Shared"><HintPath>$(MSBuildThisFileDirectory)successor-lifecycle-review/baseline/Tests/artifacts/bin/Cerebral.MetricsPlugin.Shared/release/Cerebral.MetricsPlugin.Shared.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+</Project>

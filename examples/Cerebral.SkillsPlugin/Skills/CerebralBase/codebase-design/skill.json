@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.codebase-design",
+  "name": "Design maintainable code",
+  "version": "1.0.0",
+  "description": "Design cohesive modules with small stable interfaces, explicit failure behavior and useful test boundaries.",
+  "triggers": [
+    "design a module",
+    "improve code architecture",
+    "choose an interface"
+  ]
+}

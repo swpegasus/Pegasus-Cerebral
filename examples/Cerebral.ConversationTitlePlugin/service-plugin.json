@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.conversation-titles",
+  "name": "Conversation titles",
+  "version": "0.2.0",
+  "description": "Explicitly configured first-input titles through source-bound background generation and conditional metadata effects.",
+  "assembly": "Cerebral.ConversationTitlePlugin.dll",
+  "entryType": "Cerebral.ConversationTitlePlugin.ConversationTitlePlugin",
+  "dependencies": [],
+  "portableSettings": {
+    "version": 1,
+    "fields": [
+      {
+        "name": "enabled",
+        "type": "boolean",
+        "required": true
+      }
+    ]
+  }
+}

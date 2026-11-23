@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Shared/PluginHostAccess.cs" Link="PluginHostAccess.cs" />
+    <ProjectReference Include="../../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" />
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="Never" />
+  </ItemGroup>
+  <Target Name="CopyDesktopPluginManifest" AfterTargets="Build">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\desktop-plugin.json" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

@@ -1,0 +1,348 @@
+<Project>
+  <Target Name="ValidateCerebralBooksFeature" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(CerebralIncludeBooks)' != 'true' And '$(CerebralIncludeBooks)' != 'false'"
+      Text="CerebralIncludeBooks must be true or false." />
+    <Error Condition="'$(_CerebralBooksSourceState)' == 'partial'"
+      Text="The Books source set is incomplete. Keep both Books projects locally, or omit both in a no-Books checkout." />
+    <Error Condition="'$(CerebralIncludeBooks)' == 'true' And '$(_CerebralBooksSourceState)' != 'complete'"
+      Text="CerebralIncludeBooks=true requires both local Books source projects." />
+  </Target>
+
+  <!-- Never silently carry a prior full-build Books payload into an explicitly no-Books build.
+       The caller chooses a clean output directory; retained local files are not deleted here. -->
+  <Target Name="RequireNoStaleBooksOutput" BeforeTargets="PrepareForBuild"
+    Condition="'$(CerebralIncludeBooks)' != 'true' And '$(TargetDir)' != ''">
+    <Error Condition="Exists('$(TargetDir)Plugins/Service/pegasus.books') Or Exists('$(TargetDir)Plugins/Desktop/pegasus.books') Or Exists('$(TargetDir)Cerebral.Books.dll') Or Exists('$(TargetDir)Cerebral.BookPlugin.dll')"
+      Text="Retained Books files exist in this no-Books output. Use a clean output directory; the existing files were preserved." />
+  </Target>
+
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Cerebral.Integrator' Or '$(MSBuildProjectName)' == 'Cerebral.Orchestrator'">
+    <BundledDictationProject>$(MSBuildThisFileDirectory)examples\Cerebral.DictationPlugin\Cerebral.DictationPlugin.csproj</BundledDictationProject>
+    <BundledDictationOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.DictationPlugin\bin\$(Configuration)\net10.0-windows</BundledDictationOutput>
+    <BundledDictationOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.DictationPlugin\$(Configuration)</BundledDictationOutput>
+    <BundledDictationDestination>$(TargetDir)Plugins\Desktop\pegasus.dictation</BundledDictationDestination>
+    <BundledAiDictationProject>$(MSBuildThisFileDirectory)examples\Cerebral.AiDictationPlugin\Cerebral.AiDictationPlugin.csproj</BundledAiDictationProject>
+    <BundledAiDictationOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.AiDictationPlugin\bin\$(Configuration)\net10.0-windows</BundledAiDictationOutput>
+    <BundledAiDictationOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.AiDictationPlugin\$(Configuration)</BundledAiDictationOutput>
+    <BundledAiDictationDestination>$(TargetDir)Plugins\Desktop\pegasus.ai-dictation</BundledAiDictationDestination>
+    <BundledBookProject Condition="'$(CerebralIncludeBooks)' == 'true'">$(MSBuildThisFileDirectory)examples\Cerebral.BookPlugin\Cerebral.BookPlugin.csproj</BundledBookProject>
+    <BundledBookOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.BookPlugin\bin\$(Configuration)\net10.0-windows</BundledBookOutput>
+    <BundledBookOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.BookPlugin\$(Configuration)</BundledBookOutput>
+    <BundledBookDestination>$(TargetDir)Plugins\Desktop\pegasus.books</BundledBookDestination>
+    <BundledProgrammingProject>$(MSBuildThisFileDirectory)examples\Cerebral.ProgrammingPlugin\Cerebral.ProgrammingPlugin.csproj</BundledProgrammingProject>
+    <BundledProgrammingOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.ProgrammingPlugin\bin\$(Configuration)\net10.0-windows</BundledProgrammingOutput>
+    <BundledProgrammingOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.ProgrammingPlugin\$(Configuration)</BundledProgrammingOutput>
+    <BundledProgrammingDestination>$(TargetDir)Plugins\Desktop\pegasus.programming</BundledProgrammingDestination>
+    <BundledPromptReviewProject>$(MSBuildThisFileDirectory)examples\Cerebral.PromptReviewPlugin\Cerebral.PromptReviewPlugin.csproj</BundledPromptReviewProject>
+    <BundledPromptReviewOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.PromptReviewPlugin\bin\$(Configuration)\net10.0-windows</BundledPromptReviewOutput>
+    <BundledPromptReviewOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.PromptReviewPlugin\$(Configuration)</BundledPromptReviewOutput>
+    <BundledPromptReviewDestination>$(TargetDir)Plugins\Desktop\pegasus.prompt-review</BundledPromptReviewDestination>
+    <BundledAutoPromptProject>$(MSBuildThisFileDirectory)examples\Cerebral.AutoPromptPlugin\Cerebral.AutoPromptPlugin.csproj</BundledAutoPromptProject>
+    <BundledAutoPromptOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.AutoPromptPlugin\bin\$(Configuration)\net10.0-windows</BundledAutoPromptOutput>
+    <BundledAutoPromptOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.AutoPromptPlugin\$(Configuration)</BundledAutoPromptOutput>
+    <BundledAutoPromptDestination>$(TargetDir)Plugins\Desktop\pegasus.autoprompt</BundledAutoPromptDestination>
+    <BundledCollaborationProject>$(MSBuildThisFileDirectory)examples\Cerebral.CollaborationPlugin\Cerebral.CollaborationPlugin.csproj</BundledCollaborationProject>
+    <BundledCollaborationOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.CollaborationPlugin\bin\$(Configuration)\net10.0-windows</BundledCollaborationOutput>
+    <BundledCollaborationOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.CollaborationPlugin\$(Configuration)</BundledCollaborationOutput>
+    <BundledCollaborationDestination>$(TargetDir)Plugins\Desktop\pegasus.collaboration</BundledCollaborationDestination>
+    <BundledResourcePauseProject>$(MSBuildThisFileDirectory)examples\Cerebral.ResourcePausePlugin\Cerebral.ResourcePausePlugin.csproj</BundledResourcePauseProject>
+    <BundledResourcePauseOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.ResourcePausePlugin\bin\$(Configuration)\net10.0-windows</BundledResourcePauseOutput>
+    <BundledResourcePauseOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.ResourcePausePlugin\$(Configuration)</BundledResourcePauseOutput>
+    <BundledResourcePauseDestination>$(TargetDir)Plugins\Desktop\pegasus.resource-pause</BundledResourcePauseDestination>
+    <BundledAppearanceProject>$(MSBuildThisFileDirectory)examples\Cerebral.AppearanceThemePlugin\Cerebral.AppearanceThemePlugin.csproj</BundledAppearanceProject>
+    <BundledAppearanceOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.AppearanceThemePlugin\bin\$(Configuration)\net10.0-windows</BundledAppearanceOutput>
+    <BundledAppearanceOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.AppearanceThemePlugin\$(Configuration)</BundledAppearanceOutput>
+    <BundledAppearanceDestination>$(TargetDir)Plugins\Desktop\pegasus.appearance</BundledAppearanceDestination>
+    <BundledGoalCardProject>$(MSBuildThisFileDirectory)examples\Cerebral.GoalCardPlugin\Cerebral.GoalCardPlugin.csproj</BundledGoalCardProject>
+    <BundledGoalCardOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.GoalCardPlugin\bin\$(Configuration)\net10.0-windows</BundledGoalCardOutput>
+    <BundledGoalCardOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.GoalCardPlugin\$(Configuration)</BundledGoalCardOutput>
+    <BundledGoalCardDestination>$(TargetDir)Plugins\Desktop\pegasus.goal-card</BundledGoalCardDestination>
+    <BundledChatIconsProject>$(MSBuildThisFileDirectory)examples\Cerebral.ChatIconsPlugin\Cerebral.ChatIconsPlugin.csproj</BundledChatIconsProject>
+    <BundledChatIconsOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.ChatIconsPlugin\bin\$(Configuration)\net10.0-windows</BundledChatIconsOutput>
+    <BundledChatIconsOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.ChatIconsPlugin\$(Configuration)</BundledChatIconsOutput>
+    <BundledChatIconsDestination>$(TargetDir)Plugins\Desktop\pegasus.chat-icons</BundledChatIconsDestination>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Cerebral.Worker'">
+    <BundledServiceBookProject Condition="'$(CerebralIncludeBooks)' == 'true'">$(MSBuildThisFileDirectory)src\Cerebral.Books\Cerebral.Books.csproj</BundledServiceBookProject>
+    <BundledServiceBookOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)src\Cerebral.Books\bin\$(Configuration)\net10.0</BundledServiceBookOutput>
+    <BundledServiceBookOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.Books\$(Configuration)</BundledServiceBookOutput>
+    <BundledServiceBookDestination>$(TargetDir)Plugins\Service\pegasus.books</BundledServiceBookDestination>
+    <BundledServiceProgrammingProject>$(MSBuildThisFileDirectory)src\Cerebral.Programming\Cerebral.Programming.csproj</BundledServiceProgrammingProject>
+    <BundledServiceProgrammingOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)src\Cerebral.Programming\bin\$(Configuration)\net10.0</BundledServiceProgrammingOutput>
+    <BundledServiceProgrammingOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.Programming\$(Configuration)</BundledServiceProgrammingOutput>
+    <BundledServiceProgrammingDestination>$(TargetDir)Plugins\Service\pegasus.programming</BundledServiceProgrammingDestination>
+    <BundledServiceBrowserProject>$(MSBuildThisFileDirectory)examples\Cerebral.BrowserPlugin\Cerebral.BrowserPlugin.csproj</BundledServiceBrowserProject>
+    <BundledServiceBrowserOutput Condition="'$(ArtifactsPath)' == ''">$(MSBuildThisFileDirectory)examples\Cerebral.BrowserPlugin\bin\$(Configuration)\net10.0</BundledServiceBrowserOutput>
+    <BundledServiceBrowserOutput Condition="'$(ArtifactsPath)' != ''">$(ArtifactsPath)\bin\Cerebral.BrowserPlugin\$(Configuration)</BundledServiceBrowserOutput>
+    <BundledServiceBrowserDestination>$(TargetDir)Plugins\Service\pegasus.browser</BundledServiceBrowserDestination>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(BundledDictationProject)' != ''">
+    <ProjectReference Include="$(BundledDictationProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledAiDictationProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledBookProject)" ReferenceOutputAssembly="false" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''" />
+    <ProjectReference Include="$(BundledProgrammingProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledPromptReviewProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledAutoPromptProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledCollaborationProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledResourcePauseProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledGoalCardProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledAppearanceProject)" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="$(BundledChatIconsProject)" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(BundledServiceBookProject)" ReferenceOutputAssembly="false" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledServiceBookProject)' != ''" />
+    <ProjectReference Include="$(BundledServiceProgrammingProject)" ReferenceOutputAssembly="false" Condition="'$(BundledServiceProgrammingProject)' != ''" />
+    <ProjectReference Include="$(BundledServiceBrowserProject)" ReferenceOutputAssembly="false" Condition="'$(BundledServiceBrowserProject)' != ''" />
+  </ItemGroup>
+
+  <Target Name="CopyBundledDictationPlugin" AfterTargets="Build" Condition="'$(BundledDictationProject)' != ''">
+    <ItemGroup>
+      <BundledDictationFile Include="$(BundledDictationOutput)\*.dll;$(BundledDictationOutput)\*.json;$(BundledDictationOutput)\THIRD-PARTY-NOTICES.md"
+        Exclude="$(BundledDictationOutput)\Cerebral.Desktop.Plugins.dll" />
+      <BundledDictationRuntimeFile Include="$(BundledDictationOutput)\runtimes\**\*" />
+      <BundledDictationLicenseFile Include="$(BundledDictationOutput)\Licensing\**\*" />
+    </ItemGroup>
+    <Error Condition="'$(BundledDictationProject)' != '' And (!Exists('$(BundledDictationOutput)\THIRD-PARTY-NOTICES.md') Or !Exists('$(BundledDictationOutput)\Licensing\System.Speech-10.0.12\LICENSE.TXT') Or !Exists('$(BundledDictationOutput)\Licensing\System.Speech-10.0.12\THIRD-PARTY-NOTICES.TXT'))"
+      Text="The Windows Dictation package is missing required System.Speech license or notice files." />
+    <MakeDir Directories="$(BundledDictationDestination)" />
+    <Copy SourceFiles="@(BundledDictationFile)" DestinationFolder="$(BundledDictationDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledDictationRuntimeFile)"
+      DestinationFiles="@(BundledDictationRuntimeFile->'$(BundledDictationDestination)\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledDictationLicenseFile)"
+      DestinationFiles="@(BundledDictationLicenseFile->'$(BundledDictationDestination)\Licensing\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledAiDictationPlugin" AfterTargets="Build" Condition="'$(BundledAiDictationProject)' != ''">
+    <!-- Ordinary build output carries notices; selected runtime/model resources are packaged separately. -->
+    <ItemGroup>
+      <BundledAiDictationFile Include="$(BundledAiDictationOutput)\*.dll;$(BundledAiDictationOutput)\*.json;$(BundledAiDictationOutput)\THIRD-PARTY-NOTICES.md"
+        Exclude="$(BundledAiDictationOutput)\Cerebral.Desktop.Plugins.dll" />
+      <BundledAiDictationLicenseFile Include="$(BundledAiDictationOutput)\Licensing\**\*" />
+    </ItemGroup>
+    <Error Condition="!Exists('$(BundledAiDictationOutput)\desktop-plugin.json') Or !Exists('$(BundledAiDictationOutput)\Cerebral.Speech.dll')"
+      Text="The AI Dictation package or speech provider assembly is missing from its build output." />
+    <Error Condition="'$(BundledAiDictationProject)' != '' And (!Exists('$(BundledAiDictationOutput)\THIRD-PARTY-NOTICES.md') Or !Exists('$(BundledAiDictationOutput)\Licensing\NeMo-Speech.cpp-0.1.0\LICENSE') Or !Exists('$(BundledAiDictationOutput)\Licensing\NeMo-Speech.cpp-0.1.0\NOTICE') Or !Exists('$(BundledAiDictationOutput)\Licensing\NeMo-Speech.cpp-0.1.0\THIRD_PARTY_NOTICES.md') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\LICENSE.txt') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\ATTRIBUTION.txt') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\MODEL-CARD.md') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\SOURCE.json'))"
+      Text="The AI Dictation package is missing required runtime or model license, notice, attribution or provenance files." />
+    <MakeDir Directories="$(BundledAiDictationDestination)" />
+    <Copy SourceFiles="@(BundledAiDictationFile)" DestinationFolder="$(BundledAiDictationDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledAiDictationLicenseFile)"
+      DestinationFiles="@(BundledAiDictationLicenseFile->'$(BundledAiDictationDestination)\Licensing\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledProgrammingPlugins" AfterTargets="Build" Condition="'$(BundledProgrammingProject)' != ''">
+    <ItemGroup>
+      <BundledProgrammingFile Include="$(BundledProgrammingOutput)\*.dll;$(BundledProgrammingOutput)\*.json" Exclude="$(BundledProgrammingOutput)\Cerebral.Desktop.Plugins.dll" />
+      <BundledPromptReviewFile Include="$(BundledPromptReviewOutput)\*.dll;$(BundledPromptReviewOutput)\*.json" Exclude="$(BundledPromptReviewOutput)\Cerebral.Desktop.Plugins.dll" />
+    </ItemGroup>
+    <MakeDir Directories="$(BundledProgrammingDestination);$(BundledPromptReviewDestination)" />
+    <Copy SourceFiles="@(BundledProgrammingFile)" DestinationFolder="$(BundledProgrammingDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledPromptReviewFile)" DestinationFolder="$(BundledPromptReviewDestination)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledAutoPromptPlugin" AfterTargets="Build" Condition="'$(BundledAutoPromptProject)' != ''">
+    <ItemGroup>
+      <BundledAutoPromptFile Include="$(BundledAutoPromptOutput)\*.dll;$(BundledAutoPromptOutput)\*.json"
+        Exclude="$(BundledAutoPromptOutput)\Cerebral.Desktop.Plugins.dll;$(BundledAutoPromptOutput)\Cerebral.Core.dll;$(BundledAutoPromptOutput)\Cerebral.Contracts.dll" />
+    </ItemGroup>
+    <Error Condition="!Exists('$(BundledAutoPromptOutput)\desktop-plugin.json') Or !Exists('$(BundledAutoPromptOutput)\Cerebral.AutoPromptPlugin.dll')"
+      Text="The AutoPrompt plugin output is incomplete. Build the matching host and plugin together." />
+    <MakeDir Directories="$(BundledAutoPromptDestination)" />
+    <Copy SourceFiles="@(BundledAutoPromptFile)" DestinationFolder="$(BundledAutoPromptDestination)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledCollaborationPlugin" AfterTargets="Build" Condition="'$(BundledCollaborationProject)' != ''">
+    <ItemGroup>
+      <BundledCollaborationFile Include="$(BundledCollaborationOutput)\*.dll;$(BundledCollaborationOutput)\*.json" Exclude="$(BundledCollaborationOutput)\Cerebral.Desktop.Plugins.dll" />
+    </ItemGroup>
+    <MakeDir Directories="$(BundledCollaborationDestination)" />
+    <Copy SourceFiles="@(BundledCollaborationFile)" DestinationFolder="$(BundledCollaborationDestination)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledResourcePausePlugin" AfterTargets="Build" Condition="'$(BundledResourcePauseProject)' != ''">
+    <ItemGroup>
+      <BundledResourcePauseFile Include="$(BundledResourcePauseOutput)\*.dll;$(BundledResourcePauseOutput)\*.json" Exclude="$(BundledResourcePauseOutput)\Cerebral.Desktop.Plugins.dll" />
+    </ItemGroup>
+    <MakeDir Directories="$(BundledResourcePauseDestination)" />
+    <Copy SourceFiles="@(BundledResourcePauseFile)" DestinationFolder="$(BundledResourcePauseDestination)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledAppearancePlugin" AfterTargets="Build" Condition="'$(BundledAppearanceProject)' != ''">
+    <ItemGroup><BundledAppearanceFile Include="$(BundledAppearanceOutput)\*.dll;$(BundledAppearanceOutput)\*.json;$(BundledAppearanceOutput)\README.md;$(BundledAppearanceOutput)\Presets\*.CerebralTheme" Exclude="$(BundledAppearanceOutput)\Cerebral.Desktop.Plugins.dll" /></ItemGroup>
+    <Error Condition="!Exists('$(BundledAppearanceOutput)\desktop-plugin.json')" Text="The Appearance package manifest is missing from its build output." />
+    <MakeDir Directories="$(BundledAppearanceDestination)" />
+    <Copy SourceFiles="@(BundledAppearanceFile)" DestinationFolder="$(BundledAppearanceDestination)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledGoalCardPlugin" AfterTargets="Build" Condition="'$(BundledGoalCardProject)' != ''">
+    <ItemGroup><BundledGoalCardFile Include="$(BundledGoalCardOutput)\*.dll;$(BundledGoalCardOutput)\*.json" Exclude="$(BundledGoalCardOutput)\Cerebral.Desktop.Plugins.dll" /></ItemGroup>
+    <MakeDir Directories="$(BundledGoalCardDestination)" />
+    <Copy SourceFiles="@(BundledGoalCardFile)" DestinationFolder="$(BundledGoalCardDestination)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledBookPlugin" AfterTargets="Build" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''">
+    <ItemGroup>
+      <BundledBookFile Include="$(BundledBookOutput)\*.dll;$(BundledBookOutput)\*.json"
+        Exclude="$(BundledBookOutput)\Cerebral.Desktop.Plugins.dll" />
+      <BundledBookRuntimeFile Include="$(BundledBookOutput)\runtimes\**\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(BundledBookDestination)" />
+    <Copy SourceFiles="@(BundledBookFile)" DestinationFolder="$(BundledBookDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledBookRuntimeFile)"
+      DestinationFiles="@(BundledBookRuntimeFile->'$(BundledBookDestination)\runtimes\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledDesktopPluginsToPublish" AfterTargets="Publish" Condition="'$(BundledDictationProject)' != '' And '$(PublishDir)' != ''">
+    <ItemGroup>
+      <PublishedDictationFile Include="$(BundledDictationOutput)\*.dll;$(BundledDictationOutput)\*.json;$(BundledDictationOutput)\THIRD-PARTY-NOTICES.md" Exclude="$(BundledDictationOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedAiDictationFile Include="$(BundledAiDictationOutput)\*.dll;$(BundledAiDictationOutput)\*.json;$(BundledAiDictationOutput)\THIRD-PARTY-NOTICES.md" Exclude="$(BundledAiDictationOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedDictationRuntime Include="$(BundledDictationOutput)\runtimes\**\*" />
+      <PublishedDictationLicenseFile Include="$(BundledDictationOutput)\Licensing\**\*" />
+      <PublishedAiDictationLicenseFile Include="$(BundledAiDictationOutput)\Licensing\**\*" />
+      <PublishedBookFile Include="$(BundledBookOutput)\*.dll;$(BundledBookOutput)\*.json" Exclude="$(BundledBookOutput)\Cerebral.Desktop.Plugins.dll" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''" />
+      <PublishedBookRuntime Include="$(BundledBookOutput)\runtimes\**\*" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''" />
+      <PublishedProgrammingFile Include="$(BundledProgrammingOutput)\*.dll;$(BundledProgrammingOutput)\*.json" Exclude="$(BundledProgrammingOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedPromptReviewFile Include="$(BundledPromptReviewOutput)\*.dll;$(BundledPromptReviewOutput)\*.json" Exclude="$(BundledPromptReviewOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedAutoPromptFile Include="$(BundledAutoPromptOutput)\*.dll;$(BundledAutoPromptOutput)\*.json" Exclude="$(BundledAutoPromptOutput)\Cerebral.Desktop.Plugins.dll;$(BundledAutoPromptOutput)\Cerebral.Core.dll;$(BundledAutoPromptOutput)\Cerebral.Contracts.dll" />
+      <PublishedCollaborationFile Include="$(BundledCollaborationOutput)\*.dll;$(BundledCollaborationOutput)\*.json" Exclude="$(BundledCollaborationOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedResourcePauseFile Include="$(BundledResourcePauseOutput)\*.dll;$(BundledResourcePauseOutput)\*.json" Exclude="$(BundledResourcePauseOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedAppearanceFile Include="$(BundledAppearanceOutput)\*.dll;$(BundledAppearanceOutput)\*.json;$(BundledAppearanceOutput)\README.md;$(BundledAppearanceOutput)\Presets\*.CerebralTheme" Exclude="$(BundledAppearanceOutput)\Cerebral.Desktop.Plugins.dll" />
+      <PublishedGoalCardFile Include="$(BundledGoalCardOutput)\*.dll;$(BundledGoalCardOutput)\*.json" Exclude="$(BundledGoalCardOutput)\Cerebral.Desktop.Plugins.dll" />
+    </ItemGroup>
+    <MakeDir Directories="$(PublishDir)Plugins\Desktop\pegasus.dictation;$(PublishDir)Plugins\Desktop\pegasus.ai-dictation;$(PublishDir)Plugins\Desktop\pegasus.programming;$(PublishDir)Plugins\Desktop\pegasus.prompt-review;$(PublishDir)Plugins\Desktop\pegasus.collaboration;$(PublishDir)Plugins\Desktop\pegasus.resource-pause" />
+    <Error Condition="'$(BundledDictationProject)' != '' And (!Exists('$(BundledDictationOutput)\THIRD-PARTY-NOTICES.md') Or !Exists('$(BundledDictationOutput)\Licensing\System.Speech-10.0.12\LICENSE.TXT') Or !Exists('$(BundledDictationOutput)\Licensing\System.Speech-10.0.12\THIRD-PARTY-NOTICES.TXT'))"
+      Text="The published Windows Dictation package is missing required System.Speech license or notice files." />
+    <Error Condition="'$(BundledAiDictationProject)' != '' And (!Exists('$(BundledAiDictationOutput)\THIRD-PARTY-NOTICES.md') Or !Exists('$(BundledAiDictationOutput)\Licensing\NeMo-Speech.cpp-0.1.0\LICENSE') Or !Exists('$(BundledAiDictationOutput)\Licensing\NeMo-Speech.cpp-0.1.0\NOTICE') Or !Exists('$(BundledAiDictationOutput)\Licensing\NeMo-Speech.cpp-0.1.0\THIRD_PARTY_NOTICES.md') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\LICENSE.txt') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\ATTRIBUTION.txt') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\MODEL-CARD.md') Or !Exists('$(BundledAiDictationOutput)\Licensing\Parakeet-TDT-0.6b-v3\SOURCE.json'))"
+      Text="The published AI Dictation package is missing required runtime or model license, notice, attribution or provenance files." />
+    <Copy SourceFiles="@(PublishedDictationFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.dictation" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedAiDictationFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.ai-dictation" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedDictationRuntime)" DestinationFiles="@(PublishedDictationRuntime->'$(PublishDir)Plugins\Desktop\pegasus.dictation\runtimes\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedDictationLicenseFile)" DestinationFiles="@(PublishedDictationLicenseFile->'$(PublishDir)Plugins\Desktop\pegasus.dictation\Licensing\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedAiDictationLicenseFile)" DestinationFiles="@(PublishedAiDictationLicenseFile->'$(PublishDir)Plugins\Desktop\pegasus.ai-dictation\Licensing\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <MakeDir Directories="$(PublishDir)Plugins\Desktop\pegasus.books" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''" />
+    <Copy SourceFiles="@(PublishedBookFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.books" SkipUnchangedFiles="true" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''" />
+    <Copy SourceFiles="@(PublishedBookRuntime)" DestinationFiles="@(PublishedBookRuntime->'$(PublishDir)Plugins\Desktop\pegasus.books\runtimes\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledBookProject)' != ''" />
+    <Copy SourceFiles="@(PublishedProgrammingFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.programming" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedPromptReviewFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.prompt-review" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedAutoPromptFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.autoprompt" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedCollaborationFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.collaboration" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedResourcePauseFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.resource-pause" SkipUnchangedFiles="true" />
+    <MakeDir Directories="$(PublishDir)Plugins\Desktop\pegasus.appearance" />
+    <Copy SourceFiles="@(PublishedAppearanceFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.appearance" SkipUnchangedFiles="true" />
+    <MakeDir Directories="$(PublishDir)Plugins\Desktop\pegasus.goal-card" />
+    <Copy SourceFiles="@(PublishedGoalCardFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.goal-card" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledServiceProgrammingPlugin" AfterTargets="Build" Condition="'$(BundledServiceProgrammingProject)' != ''">
+    <ItemGroup>
+      <BundledServiceProgrammingFile Include="$(BundledServiceProgrammingOutput)\*.dll;$(BundledServiceProgrammingOutput)\*.json" Exclude="$(BundledServiceProgrammingOutput)\Cerebral.Core.dll" />
+      <BundledServiceProgrammingRuntimeFile Include="$(BundledServiceProgrammingOutput)\runtimes\$(RuntimeIdentifier)\**\*" Condition="'$(RuntimeIdentifier)' != ''" />
+      <BundledServiceProgrammingRuntimeFile Include="$(BundledServiceProgrammingOutput)\runtimes\**\*" Condition="'$(RuntimeIdentifier)' == ''" />
+      <BundledServiceProgrammingNoticeFile Include="$(BundledServiceProgrammingOutput)\ThirdPartyNotices\**\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(BundledServiceProgrammingDestination)" />
+    <Copy SourceFiles="@(BundledServiceProgrammingFile)" DestinationFolder="$(BundledServiceProgrammingDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledServiceProgrammingRuntimeFile)" DestinationFiles="@(BundledServiceProgrammingRuntimeFile->'$(BundledServiceProgrammingDestination)\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledServiceProgrammingNoticeFile)" DestinationFiles="@(BundledServiceProgrammingNoticeFile->'$(BundledServiceProgrammingDestination)\ThirdPartyNotices\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledServiceBrowserPlugin" AfterTargets="Build"
+    Condition="'$(BundledServiceBrowserProject)' != '' And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'win-x64')">
+    <ItemGroup>
+      <BundledServiceBrowserFile Include="$(BundledServiceBrowserOutput)\*.dll;$(BundledServiceBrowserOutput)\*.json;$(BundledServiceBrowserOutput)\*.ps1;$(BundledServiceBrowserOutput)\*.md"
+        Exclude="$(BundledServiceBrowserOutput)\Cerebral.Core.dll" />
+      <BundledServiceBrowserDriver Include="$(BundledServiceBrowserOutput)\.playwright\**\*" />
+    </ItemGroup>
+    <Error Condition="!Exists('$(BundledServiceBrowserOutput)\service-plugin.json') Or !Exists('$(BundledServiceBrowserOutput)\.playwright')"
+      Text="The Browser service package or Playwright driver is missing from its build output." />
+    <MakeDir Directories="$(BundledServiceBrowserDestination)" />
+    <Copy SourceFiles="@(BundledServiceBrowserFile)" DestinationFolder="$(BundledServiceBrowserDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledServiceBrowserDriver)"
+      DestinationFiles="@(BundledServiceBrowserDriver->'$(BundledServiceBrowserDestination)\.playwright\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledServiceBookPlugin" AfterTargets="Build" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledServiceBookProject)' != ''">
+    <ItemGroup>
+      <BundledServiceBookFile Include="$(BundledServiceBookOutput)\*.dll;$(BundledServiceBookOutput)\*.json"
+        Exclude="$(BundledServiceBookOutput)\Cerebral.Core.dll" />
+      <BundledServiceBookRuntimeFile Include="$(BundledServiceBookOutput)\runtimes\$(RuntimeIdentifier)\**\*" Condition="'$(RuntimeIdentifier)' != ''" />
+      <BundledServiceBookRuntimeFile Include="$(BundledServiceBookOutput)\runtimes\**\*" Condition="'$(RuntimeIdentifier)' == ''" />
+      <BundledServiceBookContent Include="$(BundledServiceBookOutput)\Reference\**\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(BundledServiceBookDestination)" />
+    <Copy SourceFiles="@(BundledServiceBookFile)" DestinationFolder="$(BundledServiceBookDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledServiceBookRuntimeFile)"
+      DestinationFiles="@(BundledServiceBookRuntimeFile->'$(BundledServiceBookDestination)\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledServiceBookContent)"
+      DestinationFiles="@(BundledServiceBookContent->'$(BundledServiceBookDestination)\Reference\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledServiceBookPluginToPublish" AfterTargets="Publish" Condition="'$(CerebralIncludeBooks)' == 'true' And '$(BundledServiceBookProject)' != '' And '$(PublishDir)' != ''">
+    <ItemGroup>
+      <PublishedServiceBookFile Include="$(BundledServiceBookOutput)\*.dll;$(BundledServiceBookOutput)\*.json" Exclude="$(BundledServiceBookOutput)\Cerebral.Core.dll" />
+      <PublishedServiceBookRuntime Include="$(BundledServiceBookOutput)\runtimes\$(RuntimeIdentifier)\**\*" Condition="'$(RuntimeIdentifier)' != ''" />
+      <PublishedServiceBookRuntime Include="$(BundledServiceBookOutput)\runtimes\**\*" Condition="'$(RuntimeIdentifier)' == ''" />
+      <PublishedServiceBookContent Include="$(BundledServiceBookOutput)\Reference\**\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(PublishDir)Plugins\Service\pegasus.books" />
+    <Copy SourceFiles="@(PublishedServiceBookFile)" DestinationFolder="$(PublishDir)Plugins\Service\pegasus.books" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedServiceBookRuntime)" DestinationFiles="@(PublishedServiceBookRuntime->'$(PublishDir)Plugins\Service\pegasus.books\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedServiceBookContent)" DestinationFiles="@(PublishedServiceBookContent->'$(PublishDir)Plugins\Service\pegasus.books\Reference\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledServiceProgrammingPluginToPublish" AfterTargets="Publish" Condition="'$(BundledServiceProgrammingProject)' != '' And '$(PublishDir)' != ''">
+    <ItemGroup>
+      <PublishedServiceProgrammingFile Include="$(BundledServiceProgrammingOutput)\*.dll;$(BundledServiceProgrammingOutput)\*.json" Exclude="$(BundledServiceProgrammingOutput)\Cerebral.Core.dll" />
+      <PublishedServiceProgrammingRuntime Include="$(BundledServiceProgrammingOutput)\runtimes\$(RuntimeIdentifier)\**\*" Condition="'$(RuntimeIdentifier)' != ''" />
+      <PublishedServiceProgrammingRuntime Include="$(BundledServiceProgrammingOutput)\runtimes\**\*" Condition="'$(RuntimeIdentifier)' == ''" />
+      <PublishedServiceProgrammingNoticeFile Include="$(BundledServiceProgrammingOutput)\ThirdPartyNotices\**\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(PublishDir)Plugins\Service\pegasus.programming" />
+    <Copy SourceFiles="@(PublishedServiceProgrammingFile)" DestinationFolder="$(PublishDir)Plugins\Service\pegasus.programming" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedServiceProgrammingRuntime)" DestinationFiles="@(PublishedServiceProgrammingRuntime->'$(PublishDir)Plugins\Service\pegasus.programming\runtimes\$(RuntimeIdentifier)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedServiceProgrammingNoticeFile)" DestinationFiles="@(PublishedServiceProgrammingNoticeFile->'$(PublishDir)Plugins\Service\pegasus.programming\ThirdPartyNotices\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyBundledServiceBrowserPluginToPublish" AfterTargets="Publish"
+    Condition="'$(BundledServiceBrowserProject)' != '' And '$(PublishDir)' != '' And '$(RuntimeIdentifier)' == 'win-x64'">
+    <ItemGroup>
+      <PublishedServiceBrowserFile Include="$(BundledServiceBrowserOutput)\*.dll;$(BundledServiceBrowserOutput)\*.json;$(BundledServiceBrowserOutput)\*.ps1;$(BundledServiceBrowserOutput)\*.md"
+        Exclude="$(BundledServiceBrowserOutput)\Cerebral.Core.dll" />
+      <PublishedServiceBrowserDriver Include="$(BundledServiceBrowserOutput)\.playwright\**\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(PublishDir)Plugins\Service\pegasus.browser" />
+    <Copy SourceFiles="@(PublishedServiceBrowserFile)" DestinationFolder="$(PublishDir)Plugins\Service\pegasus.browser" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PublishedServiceBrowserDriver)"
+      DestinationFiles="@(PublishedServiceBrowserDriver->'$(PublishDir)Plugins\Service\pegasus.browser\.playwright\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="CollectBundledChatIconsFiles" Condition="'$(BundledChatIconsProject)' != ''">
+    <Error Condition="!Exists('$(BundledChatIconsOutput)\desktop-plugin.json') Or !Exists('$(BundledChatIconsOutput)\plugin-resources.json') Or !Exists('$(BundledChatIconsOutput)\Resources\Icons\chat-v1\catalog.ini')"
+      Text="The Chat Icons package or portable catalog is missing from its build output." />
+    <ItemGroup>
+      <BundledChatIconsFile Include="$(BundledChatIconsOutput)\*.dll;$(BundledChatIconsOutput)\*.json" Exclude="$(BundledChatIconsOutput)\Cerebral.Desktop.Plugins.dll" />
+      <BundledChatIconsResourceFile Include="$(BundledChatIconsOutput)\Resources\Icons\chat-v1\**\*" />
+      <BundledChatIconsLicenseFile Include="$(BundledChatIconsOutput)\Licensing\**\*" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CopyBundledChatIconsPlugin" AfterTargets="Build" DependsOnTargets="CollectBundledChatIconsFiles" Condition="'$(BundledChatIconsProject)' != ''">
+    <MakeDir Directories="$(BundledChatIconsDestination)" />
+    <Copy SourceFiles="@(BundledChatIconsFile)" DestinationFolder="$(BundledChatIconsDestination)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledChatIconsResourceFile)" DestinationFiles="@(BundledChatIconsResourceFile->'$(BundledChatIconsDestination)\Resources\Icons\chat-v1\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledChatIconsLicenseFile)" DestinationFiles="@(BundledChatIconsLicenseFile->'$(BundledChatIconsDestination)\Licensing\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="CopyBundledChatIconsPluginToPublish" AfterTargets="Publish" DependsOnTargets="CollectBundledChatIconsFiles" Condition="'$(BundledChatIconsProject)' != '' And '$(PublishDir)' != ''">
+    <MakeDir Directories="$(PublishDir)Plugins\Desktop\pegasus.chat-icons" />
+    <Copy SourceFiles="@(BundledChatIconsFile)" DestinationFolder="$(PublishDir)Plugins\Desktop\pegasus.chat-icons" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledChatIconsResourceFile)" DestinationFiles="@(BundledChatIconsResourceFile->'$(PublishDir)Plugins\Desktop\pegasus.chat-icons\Resources\Icons\chat-v1\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundledChatIconsLicenseFile)" DestinationFiles="@(BundledChatIconsLicenseFile->'$(PublishDir)Plugins\Desktop\pegasus.chat-icons\Licensing\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

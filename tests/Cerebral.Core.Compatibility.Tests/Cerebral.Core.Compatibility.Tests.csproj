@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CoreReferencePath)' == ''">
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" Private="false" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CoreReferencePath)' != ''">
+    <Reference Include="Cerebral.Core">
+      <HintPath>$(CoreReferencePath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

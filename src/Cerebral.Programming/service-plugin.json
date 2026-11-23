@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.programming",
+  "name": "Pegasus Programming",
+  "version": "1.6.13",
+  "description": "SQLite-backed software plans and a durable development harness with bounded source generation, model/tool execution, verified project checks, and an exact plugin verify/present handoff.",
+  "assembly": "Cerebral.Programming.dll",
+  "entryType": "Cerebral.Programming.ProgrammingServicePlugin"
+}

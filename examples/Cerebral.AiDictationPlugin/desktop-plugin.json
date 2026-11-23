@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.ai-dictation",
+  "name": "Pegasus AI Dictation",
+  "version": "1.2.8",
+  "description": "Continuous capture and ordered phrases after pauses using the selected resident offline CPU model; separately selected live words require the optional streaming model. Includes one-off Record/Stop/Play/review/Insert, bounded pending-audio recovery and final-phrase grammar. Never submits messages.",
+  "assembly": "Cerebral.AiDictationPlugin.dll",
+  "entryType": "Cerebral.AiDictationPlugin.AiDictationPlugin",
+  "dependencies": [],
+  "defaultEnabled": true,
+  "exclusiveGroup": "dictation.input",
+  "exclusivePriority": 100
+}

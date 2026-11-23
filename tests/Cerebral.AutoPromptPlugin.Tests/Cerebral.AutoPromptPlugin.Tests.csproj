@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../examples/Cerebral.AutoPromptPlugin/Cerebral.AutoPromptPlugin.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" />
+    <Compile Include="../../src/Cerebral.Orchestrator/ComposerSuggestionState.cs;../../src/Cerebral.Orchestrator/ComposerSuggestionInput.cs;../../src/Cerebral.Orchestrator/ComposerSuggestionSurface.cs;../../src/Cerebral.Desktop/WorkflowDisplayedFinalResponse.cs" Link="Production/%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

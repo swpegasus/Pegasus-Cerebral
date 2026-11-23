@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.code-review",
+  "name": "Review a change",
+  "version": "1.0.0",
+  "description": "Review an authorized change for requested behavior, correctness, project conventions and material risk.",
+  "triggers": [
+    "review this change",
+    "review a pull request",
+    "review the source diff"
+  ]
+}

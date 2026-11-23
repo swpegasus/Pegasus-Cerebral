@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 2,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.conversation-titles",
+  "name": "Conversation titles",
+  "version": "0.2.0",
+  "description": "Native preferences for explicit conversation-title source scopes and local inference references.",
+  "assembly": "Cerebral.ConversationTitlePlugin.Desktop.dll",
+  "entryType": "Cerebral.ConversationTitlePlugin.Desktop.ConversationTitleDesktopPlugin",
+  "dependencies": []
+}

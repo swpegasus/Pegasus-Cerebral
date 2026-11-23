@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.dictation",
+  "name": "Pegasus Dictation",
+  "version": "1.0.8",
+  "description": "Free offline Windows dictation and opt-in voice controls for Cerebral text entry, with local vocabulary, corrections, live input diagnostics, speech profile management, and Windows training access.",
+  "assembly": "Cerebral.DictationPlugin.dll",
+  "entryType": "Cerebral.DictationPlugin.DictationPlugin",
+  "dependencies": [],
+  "defaultEnabled": false,
+  "exclusiveGroup": "dictation.input",
+  "exclusivePriority": 10
+}

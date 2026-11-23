@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.writing-for-agents",
+  "name": "Write useful agent guidance",
+  "version": "1.0.0",
+  "description": "Write concise instruction documents with clear triggers, progressive disclosure and checkable outcomes.",
+  "triggers": [
+    "write agent guidance",
+    "write an instruction skill",
+    "improve agent documentation"
+  ]
+}

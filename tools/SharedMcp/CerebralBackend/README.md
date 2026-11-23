@@ -1,0 +1,13 @@
+# Cerebral development MCP backend
+
+This small executable presents the existing `OperatorMcpHost` over standard input/output. It links the owning host source and references `Cerebral.Client`; it adds no operation catalog. The shared loopback transport starts one instance for this product, rather than one instance per Codex chat.
+
+Build with `dotnet build tools/SharedMcp/CerebralBackend/CerebralBackend.csproj`. Run the resulting `Pegasus.Cerebral.McpBackend.exe` with no arguments for the existing captured installed-service owner route. The program supplies `mcp --operator`; a complete explicit prefix is also accepted. Unknown or mixed options are rejected by the existing host parser.
+
+The three tools are `cerebral_discover`, `cerebral_describe` and `cerebral_call`. Use discovery and exact operation descriptions before control calls. Actual control stays in `OperatorMcpRegistry` and the existing typed authenticated transports, including their revision, selection, request identity and uncertainty checks. Cancellation stops the caller's wait and may leave an admitted mutation uncertain; reconcile the original operation before retrying.
+
+The default factory captures the protected **installed service** enrollment. It does not start a Worker, Main, Configuration, engine or model, and it does not choose another owner or HTTP transport when the service is unavailable. A running installed desktop user Worker uses a distinct exact-process owner factory and is not silently substituted. `cerebral_discover` and `cerebral_describe` can inspect the real compiled catalog without proving any live backend is available. A successful `cerebral_call` for `health` establishes only the current captured service connection.
+
+Main and Configuration control require complete fixed desktop bindings passed as launch arguments: `--main-exe`, `--main-sha256`, `--main-entry-sha256`, `--main-descriptor`, and corresponding `--configuration-*` options. These bindings belong to trusted operator configuration, never tool arguments. The existing transport pins the executable and managed entry and uses the owning semantic CLI, preserving native server identity checks. Each desktop call can start a short semantic client helper; it does not start the desktop application. Leave these options absent unless the intended running application and binding have been verified.
+
+This development component changes no registration, installed files, service configuration, credentials, permissions or privileged execution policy. It uses newline-delimited JSON on standard input/output; diagnostic text stays on standard error.

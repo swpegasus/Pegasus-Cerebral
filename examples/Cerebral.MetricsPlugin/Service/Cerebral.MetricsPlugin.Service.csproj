@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Version>0.2.0</Version>
+    <MetricsCoreReferencePath Condition="'$(MetricsCoreReferencePath)' == ''">$(MSBuildThisFileDirectory)../../../src/Cerebral.Core/bin/Release/net10.0/Cerebral.Core.dll</MetricsCoreReferencePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Shared/Cerebral.MetricsPlugin.Shared.csproj" />
+    <Reference Include="Cerebral.Core"><HintPath>$(MetricsCoreReferencePath)</HintPath><Private>false</Private></Reference>
+    <None Update="service-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="Cerebral.MetricsPlugin.Tests" />
+  </ItemGroup>
+</Project>

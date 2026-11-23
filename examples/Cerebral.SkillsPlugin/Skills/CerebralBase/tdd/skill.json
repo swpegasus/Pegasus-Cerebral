@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.tdd",
+  "name": "Test-driven changes",
+  "version": "1.0.0",
+  "description": "Use focused behavior tests for consequential changes when test execution is authorized.",
+  "triggers": [
+    "test-driven development",
+    "red green refactor",
+    "behavior regression test"
+  ]
+}

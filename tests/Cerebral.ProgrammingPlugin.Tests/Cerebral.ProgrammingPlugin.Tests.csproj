@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**;bin/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Compile the owned component source so internal target policy and submission callbacks can be exercised without a public test seam. -->
+    <Compile Include="../../examples/Cerebral.ProgrammingPlugin/ProgrammingPlugin.cs" Link="ProgrammingPlugin.cs" />
+    <Compile Include="../../src/Cerebral.Programming/ProgrammingWorkflowIdentity.cs" Link="ProgrammingWorkflowIdentity.cs" />
+    <Compile Include="../../src/Cerebral.Programming/ProgrammingDevelopmentGuidance.cs" Link="ProgrammingDevelopmentGuidance.cs" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Condition="'$(ProgrammingDesktopSdkPath)' == ''" />
+    <Reference Include="Cerebral.Desktop.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Condition="'$(ProgrammingDesktopSdkPath)' != ''">
+      <HintPath>$(ProgrammingDesktopSdkPath)</HintPath><Private>true</Private><SpecificVersion>true</SpecificVersion>
+    </Reference>
+    <ProjectReference Include="../../src/Cerebral.Programming/Cerebral.Programming.csproj" ReferenceOutputAssembly="false" Condition="'$(ProgrammingServiceArtifactPath)' == ''" />
+    <ProjectReference Include="../../examples/Cerebral.ProgrammingPlugin/Cerebral.ProgrammingPlugin.csproj" ReferenceOutputAssembly="false" Condition="'$(ProgrammingPanelArtifactPath)' == ''" />
+  </ItemGroup>
+  <Target Name="VerifyProgrammingDesktopSdkReference" AfterTargets="ResolveAssemblyReferences" Condition="'$(ProgrammingDesktopSdkPath)' != ''">
+    <ItemGroup><_ProgrammingSdkExpected Include="$(ProgrammingDesktopSdkPath)" /><_ProgrammingSdkExpected Remove="@(ReferencePath)" MatchOnMetadata="FullPath" MatchOnMetadataOptions="PathLike" /></ItemGroup>
+    <Error Condition="'@(_ProgrammingSdkExpected)' != ''" Text="Programming tests require the exact supplied desktop SDK assembly." />
+  </Target>
+  <Target Name="CopyProgrammingArtifactFixtures" AfterTargets="Build">
+    <MSBuild Projects="../../src/Cerebral.Programming/Cerebral.Programming.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration)" RemoveProperties="TargetFramework;RuntimeIdentifier;SelfContained" Condition="'$(ProgrammingServiceArtifactPath)' == ''">
+      <Output TaskParameter="TargetOutputs" ItemName="_ProgrammingServiceFixture" />
+    </MSBuild>
+    <MSBuild Projects="../../examples/Cerebral.ProgrammingPlugin/Cerebral.ProgrammingPlugin.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration)" RemoveProperties="TargetFramework;RuntimeIdentifier;SelfContained" Condition="'$(ProgrammingPanelArtifactPath)' == ''">
+      <Output TaskParameter="TargetOutputs" ItemName="_ProgrammingPanelFixture" />
+    </MSBuild>
+    <ItemGroup>
+      <_ProgrammingServiceFixture Include="$(ProgrammingServiceArtifactPath)" Condition="'$(ProgrammingServiceArtifactPath)' != ''" />
+      <_ProgrammingPanelFixture Include="$(ProgrammingPanelArtifactPath)" Condition="'$(ProgrammingPanelArtifactPath)' != ''" />
+    </ItemGroup>
+    <Error Condition="'@(_ProgrammingServiceFixture)' == '' Or '@(_ProgrammingPanelFixture)' == ''" Text="Programming service and panel artifact fixtures are required." />
+    <Copy SourceFiles="@(_ProgrammingServiceFixture)" DestinationFolder="$(TargetDir)fixtures" />
+    <Copy SourceFiles="@(_ProgrammingPanelFixture)" DestinationFolder="$(TargetDir)fixtures" />
+  </Target>
+</Project>

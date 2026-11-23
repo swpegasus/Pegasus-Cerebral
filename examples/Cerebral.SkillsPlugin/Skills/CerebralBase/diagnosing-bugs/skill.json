@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.diagnosing-bugs",
+  "name": "Diagnose bugs",
+  "version": "1.0.0",
+  "description": "Investigate a specific failure with bounded evidence, a useful reproduction and proportionate verification.",
+  "triggers": [
+    "diagnose a bug",
+    "debug this failure",
+    "performance regression"
+  ]
+}

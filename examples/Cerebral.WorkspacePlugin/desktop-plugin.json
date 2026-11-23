@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.workspace-actions",
+  "name": "Workspace and Message Actions",
+  "version": "1.0.0",
+  "description": "Native WPF workspace panel, draft quote action, response display preference and original-message copy buttons.",
+  "assembly": "Cerebral.WorkspacePlugin.dll",
+  "entryType": "Cerebral.WorkspacePlugin.WorkspacePlugin"
+}

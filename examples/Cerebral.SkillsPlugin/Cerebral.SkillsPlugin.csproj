@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>0.1.0</Version>
+    <Description>Owner-managed instruction skills for Pegasus Cerebral</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" />
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" Private="false" />
+    <None Update="desktop-plugin.json;Skills/**/*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="Cerebral.SkillsPlugin.Tests" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.anthropic-provider",
+  "name": "Pegasus Anthropic Model Provider",
+  "version": "1.0.0",
+  "description": "Hosted model protocol adapter. Unconfigured by default; requires explicit admitted model-host configuration. Phase1 fixture-verified only.",
+  "assembly": "Cerebral.AnthropicProviderPlugin.dll",
+  "entryType": "Cerebral.AnthropicProviderPlugin.AnthropicProviderPlugin",
+  "dependencies": []
+}

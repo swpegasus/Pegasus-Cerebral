@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting><Version>0.2.0</Version><EnableDefaultItems>false</EnableDefaultItems></PropertyGroup>
+  <PropertyGroup>
+    <MetricsCoreReferencePath Condition="'$(MetricsCoreReferencePath)' == ''">$(MSBuildThisFileDirectory)../../../src/Cerebral.Core/bin/Release/net10.0/Cerebral.Core.dll</MetricsCoreReferencePath>
+    <MetricsDesktopReferencePath Condition="'$(MetricsDesktopReferencePath)' == ''">$(MSBuildThisFileDirectory)../../../src/Cerebral.Desktop.Plugins/bin/Release/net10.0-windows/Cerebral.Desktop.Plugins.dll</MetricsDesktopReferencePath>
+  </PropertyGroup>
+  <!-- Frozen evidence and prior build DLLs under Tests are not candidate assembly inputs. -->
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <ProjectReference Include="../Service/Cerebral.MetricsPlugin.Service.csproj" />
+    <ProjectReference Include="../Desktop/Cerebral.MetricsPlugin.Desktop.csproj" />
+    <Reference Include="Cerebral.Core"><HintPath>$(MetricsCoreReferencePath)</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(MetricsDesktopReferencePath)</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+</Project>

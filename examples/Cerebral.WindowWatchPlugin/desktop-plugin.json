@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.window-watch",
+  "name": "Window Watch",
+  "version": "0.1.2",
+  "description": "Analyze one selected window with a local vision model, manually or on a change-aware timer.",
+  "assembly": "Cerebral.WindowWatchPlugin.dll",
+  "entryType": "Cerebral.WindowWatchPlugin.WindowWatchPlugin",
+  "dependencies": [],
+  "defaultEnabled": false,
+  "exclusiveGroup": "pegasus.window-watch",
+  "exclusivePriority": 0
+}

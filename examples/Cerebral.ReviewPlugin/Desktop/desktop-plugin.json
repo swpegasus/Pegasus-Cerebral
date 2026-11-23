@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "example.review",
+  "name": "Review Workflow Example",
+  "version": "1.0.0",
+  "description": "Native review panel and action for the durable example.review service workflow.",
+  "assembly": "Cerebral.ReviewPlugin.Desktop.dll",
+  "entryType": "Cerebral.ReviewPlugin.Desktop.ExampleReviewDesktopPlugin"
+}

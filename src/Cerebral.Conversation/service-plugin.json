@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.conversation",
+  "name": "Conversation Workflow",
+  "version": "1.0.20",
+  "description": "Provides Cerebral’s default conversation behavior. Guides model and tool interactions, selects conversational context, handles clarification and steering, and determines when a turn should continue, wait for input, or finish. Uses the framework’s shared execution, permissions, persistence, and collaboration services.",
+  "assembly": "Cerebral.Conversation.dll",
+  "entryType": "Cerebral.Conversation.LocalGenerationConversationServicePlugin"
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "resources": [
+    {
+      "id": "nemo-speech-cpu",
+      "kind": "tool",
+      "source": "Resources/Runtime",
+      "destination": "AI-Dictation/NeMo-Speech"
+    },
+    {
+      "id": "parakeet-tdt-0.6b-v3",
+      "kind": "model",
+      "source": "Resources/Model",
+      "destination": "AI-Dictation"
+    }
+  ]
+}

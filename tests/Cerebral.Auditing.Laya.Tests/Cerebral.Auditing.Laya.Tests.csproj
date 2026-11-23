@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/Cerebral.Auditing.Laya/Cerebral.Auditing.Laya.csproj" /></ItemGroup>
+  <ItemGroup><None Include="Fixtures/native-ready.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+</Project>

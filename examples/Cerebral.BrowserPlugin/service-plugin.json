@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 2,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.browser",
+  "name": "Pegasus Browser",
+  "version": "1.0.2",
+  "description": "Bounded read-only HTTP page source requests and isolated rendered browser tools. No browser is downloaded automatically; page requests need no browser runtime.",
+  "assembly": "Cerebral.BrowserPlugin.dll",
+  "entryType": "Cerebral.BrowserPlugin.BrowserServicePlugin",
+  "portableSettings": {
+    "version": 1,
+    "fields": [
+      {
+        "name": "maximumJobs",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 4
+      },
+      {
+        "name": "maximumTabsPerJob",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 8
+      },
+      {
+        "name": "maximumTabs",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 16
+      },
+      {
+        "name": "maximumActionsPerSession",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1
+      },
+      {
+        "name": "queueDepth",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 16
+      },
+      {
+        "name": "minimumActionDelayMilliseconds",
+        "type": "integer",
+        "minimum": 100,
+        "maximum": 5000
+      },
+      {
+        "name": "navigationTimeoutSeconds",
+        "type": "integer",
+        "minimum": 2,
+        "maximum": 120
+      },
+      {
+        "name": "actionTimeoutSeconds",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 60
+      },
+      {
+        "name": "idleTimeoutSeconds",
+        "type": "integer",
+        "minimum": 30,
+        "maximum": 1800
+      },
+      {
+        "name": "pageHeapLimitMiB",
+        "type": "integer",
+        "minimum": 16,
+        "maximum": 1024
+      },
+      {
+        "name": "downloadFileBytes",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 268435456
+      },
+      {
+        "name": "downloadQuotaBytes",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1073741824
+      },
+      {
+        "name": "screenshotQuotaBytes",
+        "type": "integer",
+        "minimum": 262144,
+        "maximum": 67108864
+      },
+      {
+        "name": "screenshotRetentionMinutes",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1440
+      },
+      {
+        "name": "allowedDomains",
+        "type": "string-list",
+        "maximumItems": 32,
+        "maximumUtf8Bytes": 253
+      },
+      {
+        "name": "downloads",
+        "type": "string",
+        "maximumUtf8Bytes": 7,
+        "allowedValues": [
+          "deny",
+          "confirm"
+        ]
+      },
+      {
+        "name": "uploads",
+        "type": "string",
+        "maximumUtf8Bytes": 7,
+        "allowedValues": [
+          "deny",
+          "confirm"
+        ]
+      },
+      {
+        "name": "clipboard",
+        "type": "string",
+        "maximumUtf8Bytes": 7,
+        "allowedValues": [
+          "deny",
+          "confirm"
+        ]
+      },
+      {
+        "name": "authentication",
+        "type": "string",
+        "maximumUtf8Bytes": 7,
+        "allowedValues": [
+          "deny",
+          "confirm"
+        ]
+      },
+      {
+        "name": "externalApplications",
+        "type": "string",
+        "maximumUtf8Bytes": 7,
+        "allowedValues": [
+          "deny",
+          "confirm"
+        ]
+      },
+      {
+        "name": "outsideDomains",
+        "type": "string",
+        "maximumUtf8Bytes": 7,
+        "allowedValues": [
+          "deny",
+          "confirm"
+        ]
+      }
+    ]
+  }
+}

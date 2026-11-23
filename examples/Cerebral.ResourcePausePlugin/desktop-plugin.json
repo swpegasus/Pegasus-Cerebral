@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.resource-pause",
+  "name": "Pegasus Resource Pause",
+  "version": "1.1.5",
+  "description": "Owner controls for local GPU preference, engine generation review, and durable stop or finish-current work holds.",
+  "assembly": "Cerebral.ResourcePausePlugin.dll",
+  "entryType": "Cerebral.ResourcePausePlugin.ResourcePausePlugin",
+  "dependencies": [],
+  "defaultEnabled": true,
+  "exclusiveGroup": "pegasus.resource-pause",
+  "exclusivePriority": 0
+}

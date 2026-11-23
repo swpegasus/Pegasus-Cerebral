@@ -1,0 +1,91 @@
+{
+  "contract": "pegasus.cerebral.status-icons/1",
+  "sourceContract": "pegasus.assets/2",
+  "sourceNamespace": "knowledge.shared",
+  "sourceRoute": "Source Worker cortex.assets.read; serverId=cortex",
+  "license": "Apache-2.0",
+  "upstreamRevision": "4ef50878f17accbed89ef2691bdc357562ed0a17",
+  "artworkModified": false,
+  "assets": [
+    {
+      "file": "cpu-line.svg",
+      "id": "visual.remix-icon.device.cpu-line.efbaf0f81d3d",
+      "metadataUri": "cortex://6f9aed53c6efe16163103185b77612302d5ceb7df56cf97bfaf5442168307fed",
+      "bytesUri": "cortex://6f9aed53c6efe16163103185b77612302d5ceb7df56cf97bfaf5442168307fed?part=bytes",
+      "size": 334,
+      "sha256": "c3f9d4128b86b8bb8028f33f125f45e7f3abc643729fd70fc63b46ced91b8629",
+      "mimeType": "image/svg+xml",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/icons/Device/cpu-line.svg"
+    },
+    {
+      "file": "ram-2-line.svg",
+      "id": "visual.remix-icon.device.ram-2-line.4d7a03f34575",
+      "metadataUri": "cortex://fc5cb0ef231b93aee0a10b959e67de4b6710a6cb2214148938058128c871cc75",
+      "bytesUri": "cortex://fc5cb0ef231b93aee0a10b959e67de4b6710a6cb2214148938058128c871cc75?part=bytes",
+      "size": 463,
+      "sha256": "342f1f3ac3ef036c13697a24fb1b6886e94ca6c7f9cf9801b3029ceda4e5d7ed",
+      "mimeType": "image/svg+xml",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/icons/Device/ram-2-line.svg"
+    },
+    {
+      "file": "hard-drive-2-line.svg",
+      "id": "visual.remix-icon.device.hard-drive-2-line.114d3e507fcf",
+      "metadataUri": "cortex://2a03aa1c53f7644873ba4f70fba3eaff7ca12945b723d595f3721b370d58aae1",
+      "bytesUri": "cortex://2a03aa1c53f7644873ba4f70fba3eaff7ca12945b723d595f3721b370d58aae1?part=bytes",
+      "size": 269,
+      "sha256": "8ef731c6702a19db270c82607d39138293b026b8a3127512876de0d46819df2d",
+      "mimeType": "image/svg+xml",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/icons/Device/hard-drive-2-line.svg"
+    },
+    {
+      "file": "computer-line.svg",
+      "id": "visual.remix-icon.device.computer-line.b605fe86bf98",
+      "metadataUri": "cortex://8217b6b8a7bf43508d88542108194baadd0e9f4130a0c6e0884508078456713f",
+      "bytesUri": "cortex://8217b6b8a7bf43508d88542108194baadd0e9f4130a0c6e0884508078456713f?part=bytes",
+      "size": 299,
+      "sha256": "41ce0e2a6928afe4e627524807603cce9021c560ed1e39ec3d5dbfb55f6471b4",
+      "mimeType": "image/svg+xml",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/icons/Device/computer-line.svg"
+    },
+    {
+      "file": "robot-2-line.svg",
+      "id": "visual.remix-icon.user-faces.robot-2-line.eda302cd0c37",
+      "metadataUri": "cortex://ef958be755d28855bb268ec398fc5ab9072146a589cf631917cd9629307e6222",
+      "bytesUri": "cortex://ef958be755d28855bb268ec398fc5ab9072146a589cf631917cd9629307e6222?part=bytes",
+      "size": 817,
+      "sha256": "7c6b289f2f5ebe53b38c3862d0325d720621ae044a58a1b06691808d35f80807",
+      "mimeType": "image/svg+xml",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/icons/User%20%26%20Faces/robot-2-line.svg"
+    },
+    {
+      "file": "stack-line.svg",
+      "id": "visual.remix-icon.business.stack-line.2db99a3966d9",
+      "metadataUri": "cortex://633924da07ccedba23d846dd016d924ff5a5b2ba1b77e19d2b6c45c244cb8bba",
+      "bytesUri": "cortex://633924da07ccedba23d846dd016d924ff5a5b2ba1b77e19d2b6c45c244cb8bba?part=bytes",
+      "size": 1152,
+      "sha256": "c3d706391b37a7ce18d0b17e04cd524c37bfb58c806493e191e7dc3c95cda393",
+      "mimeType": "image/svg+xml",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/icons/Business/stack-line.svg"
+    },
+    {
+      "file": "LICENSE.txt",
+      "id": "visual.remix-icon.license",
+      "metadataUri": "cortex://2994602e6d40b61223d08ec3a2350f703f0aa9d6d11a991dd19292309c460fe7",
+      "bytesUri": "cortex://2994602e6d40b61223d08ec3a2350f703f0aa9d6d11a991dd19292309c460fe7?part=bytes",
+      "size": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "mimeType": "text/plain",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/License"
+    },
+    {
+      "file": "NOTICE.txt",
+      "id": "visual.remix-icon.notice",
+      "metadataUri": "cortex://6a9e8a660bd8d17c1501caf1a5ef3c1f135f1971bcf9801021fd6b7dc299082e",
+      "bytesUri": "cortex://6a9e8a660bd8d17c1501caf1a5ef3c1f135f1971bcf9801021fd6b7dc299082e?part=bytes",
+      "size": 288,
+      "sha256": "e2bc5c5944a98713a617159ddab04ace9c243d1e26719abd5d5a808a81c07861",
+      "mimeType": "text/plain",
+      "source": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/License"
+    }
+  ]
+}

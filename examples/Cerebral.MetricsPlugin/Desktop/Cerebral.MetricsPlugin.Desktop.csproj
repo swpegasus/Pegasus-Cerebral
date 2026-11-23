@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Version>0.2.0</Version><MetricsDesktopReferencePath Condition="'$(MetricsDesktopReferencePath)' == ''">$(MSBuildThisFileDirectory)../../../src/Cerebral.Desktop.Plugins/bin/Release/net10.0-windows/Cerebral.Desktop.Plugins.dll</MetricsDesktopReferencePath><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Shared/Cerebral.MetricsPlugin.Shared.csproj" />
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(MetricsDesktopReferencePath)</HintPath><Private>false</Private></Reference>
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="Cerebral.MetricsPlugin.Tests" />
+  </ItemGroup>
+</Project>

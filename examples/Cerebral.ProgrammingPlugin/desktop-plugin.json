@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.programming",
+  "name": "Pegasus Programming",
+  "version": "1.1.3",
+  "description": "Explicit Programming targets, guarded submissions, and visible accepted workflow receipts with navigation.",
+  "assembly": "Cerebral.ProgrammingPlugin.dll",
+  "entryType": "Cerebral.ProgrammingPlugin.ProgrammingPlugin"
+}

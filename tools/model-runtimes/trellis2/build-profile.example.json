@@ -1,0 +1,13 @@
+{
+  "schema": "pegasus.trellis2.build-profile.v1",
+  "targetPlatform": "linux/arm64",
+  "cudaArchitecture": "12.1",
+  "baseImage": null,
+  "pythonVersion": null,
+  "torchVersion": null,
+  "sourceLockSha256": null,
+  "pythonWheelLockSha256": null,
+  "qualificationRequired": true,
+  "qualified": false,
+  "notes": "EXAMPLE ONLY. Installer must replace nulls using the actual GB10 stack probe and produce build-inputs/profile.json plus a complete hashed wheel lock/wheelhouse. This file cannot be built as a qualified profile."
+}

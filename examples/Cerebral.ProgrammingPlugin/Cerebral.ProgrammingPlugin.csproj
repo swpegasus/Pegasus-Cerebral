@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Keep old local intermediates excluded when qualification uses an isolated output root. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**;bin/**</DefaultItemExcludes>
+    <Description>Guided programming projects and durable development plans for Pegasus Cerebral</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/Cerebral.Programming/ProgrammingWorkflowIdentity.cs" Link="ProgrammingWorkflowIdentity.cs" />
+    <Compile Include="../../src/Cerebral.Programming/ProgrammingDevelopmentGuidance.cs" Link="ProgrammingDevelopmentGuidance.cs" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" Condition="'$(ProgrammingDesktopSdkPath)' == ''" />
+    <Reference Include="Cerebral.Desktop.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Condition="'$(ProgrammingDesktopSdkPath)' != ''">
+      <HintPath>$(ProgrammingDesktopSdkPath)</HintPath><Private>false</Private><SpecificVersion>true</SpecificVersion>
+    </Reference>
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="Never" />
+  </ItemGroup>
+  <Target Name="VerifyProgrammingDesktopSdkReference" AfterTargets="ResolveAssemblyReferences" Condition="'$(ProgrammingDesktopSdkPath)' != ''">
+    <ItemGroup><_ProgrammingSdkExpected Include="$(ProgrammingDesktopSdkPath)" /><_ProgrammingSdkExpected Remove="@(ReferencePath)" MatchOnMetadata="FullPath" MatchOnMetadataOptions="PathLike" /></ItemGroup>
+    <Error Condition="'@(_ProgrammingSdkExpected)' != ''" Text="Programming requires the exact supplied desktop SDK assembly." />
+  </Target>
+  <Target Name="CopyDesktopPluginManifest" AfterTargets="Build"><Copy SourceFiles="$(MSBuildProjectDirectory)\desktop-plugin.json" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" /></Target>
+</Project>

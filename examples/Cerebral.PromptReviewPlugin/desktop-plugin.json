@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.prompt-review",
+  "name": "Pegasus Prompt Review",
+  "version": "1.0.10",
+  "description": "Refine a request before normal submission; preserve direct edits and unapplied notes, then return explicit approved wording to the composer without sending.",
+  "assembly": "Cerebral.PromptReviewPlugin.dll",
+  "entryType": "Cerebral.PromptReviewPlugin.PromptReviewPlugin"
+}

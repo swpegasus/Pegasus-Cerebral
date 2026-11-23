@@ -1,0 +1,20 @@
+# Candidate DIRECT requirements; not a transitive or ARM64-qualified wheel lock.
+# Installer resolves these against the exact pinned base into build-inputs/python-wheels.lock.
+# Torch, torchvision and Triton belong to that digest-pinned NVIDIA base/profile.
+numpy==2.2.6
+Pillow==12.0.0
+easydict==1.13
+tqdm==4.67.1
+opencv-python-headless==4.11.0.86
+trimesh==4.11.0
+transformers==4.57.3
+huggingface-hub==0.36.0
+safetensors==0.6.2
+timm==1.0.22
+kornia==0.8.2
+imageio==2.37.2
+imageio-ffmpeg==0.6.0
+zstandard==0.25.0
+scipy==1.16.3
+packaging==25.0
+ninja==1.13.0

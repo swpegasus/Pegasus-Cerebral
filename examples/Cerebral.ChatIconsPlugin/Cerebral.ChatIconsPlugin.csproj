@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Version>1.0.3</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Shared/PluginHostAccess.cs" Link="PluginHostAccess.cs" />
+    <Compile Remove="PackTool/**/*.cs" />
+    <Compile Include="../Shared/PackageSettingsOwnerClient.cs" Link="PackageSettingsOwnerClient.cs" />
+    <ProjectReference Include="../../src/Cerebral.Contracts/Cerebral.Contracts.csproj" Private="false" />
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" Private="false" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" />
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="plugin-resources.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../assets/icons/chat-v1/**/*" Link="Resources/Icons/chat-v1/%(RecursiveDir)%(Filename)%(Extension)"
+      CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../assets/icons/chat-v1/Licensing/*" Link="Licensing/%(Filename)%(Extension)"
+      CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

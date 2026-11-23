@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 2,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.appearance",
+  "name": "Pegasus Appearance",
+  "version": "1.0.0",
+  "description": "Import, export and select portable color presets for the shared desktop theme. Existing System, Light and Dark modes remain available.",
+  "assembly": "Cerebral.AppearanceThemePlugin.dll",
+  "entryType": "Cerebral.AppearanceThemePlugin.AppearanceThemePlugin",
+  "dependencies": []
+}

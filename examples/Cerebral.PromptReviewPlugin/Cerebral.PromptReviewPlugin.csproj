@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Version>1.0.10</Version><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableWindowsTargeting>true</EnableWindowsTargeting><CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies><Description>Optional request-understanding gate for Pegasus Cerebral</Description></PropertyGroup>
+  <ItemGroup>
+  <Compile Include="../Shared/PluginHostAccess.cs" Link="PluginHostAccess.cs" /><ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" /><None Update="desktop-plugin.json" CopyToOutputDirectory="Never" /></ItemGroup>
+  <Target Name="CopyDesktopPluginManifest" AfterTargets="Build"><Copy SourceFiles="$(MSBuildProjectDirectory)\desktop-plugin.json" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" /></Target>
+</Project>

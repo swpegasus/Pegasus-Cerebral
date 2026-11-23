@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>1.2.8</Version>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Description>Removable local Parakeet AI dictation for Cerebral text entry</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Native libraries load only in the private helper process, never Main. -->
+    <Compile Remove="NemoNativeAsr.cs" />
+    <Compile Include="../../src/Cerebral.Orchestrator/ComposerDraftPresentation.cs" Link="ComposerDraftPresentation.cs" />
+    <Compile Include="../Shared/PackageSettingsOwnerClient.cs" Link="PackageSettingsOwnerClient.cs" />
+    <Compile Include="../Shared/PackagePreferenceJson.cs" Link="PackagePreferenceJson.cs" />
+    <Compile Include="../Shared/PackagePreferenceSession.cs" Link="PackagePreferenceSession.cs" />
+    <Compile Include="../Shared/PackagePreferenceEditor.cs" Link="PackagePreferenceEditor.cs" />
+    <Compile Include="../Shared/DictatedTextInsertion.cs" Link="DictatedTextInsertion.cs" />
+    <ProjectReference Include="../../src/Cerebral.Contracts/Cerebral.Contracts.csproj" Private="false" />
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" Private="false" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" Private="false" />
+    <ProjectReference Include="../../src/Cerebral.Speech/Cerebral.Speech.csproj" />
+    <ProjectReference Include="../Cerebral.AiDictation.NativeHost/Cerebral.AiDictation.NativeHost.csproj" ReferenceOutputAssembly="false" />
+    <None Update="desktop-plugin.json" CopyToOutputDirectory="Never" />
+    <None Update="plugin-resources.json" CopyToOutputDirectory="Never" />
+    <None Update="THIRD-PARTY-NOTICES.md;Licensing/**/*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
+    <InternalsVisibleTo Include="Cerebral.AiDictationPlugin.Tests" />
+  </ItemGroup>
+  <Target Name="CopyDesktopPluginManifest" AfterTargets="Build">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/desktop-plugin.json" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/plugin-resources.json" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="CopyPrivateNativeSpeechHelper" AfterTargets="Build">
+    <MSBuild Projects="$(MSBuildProjectDirectory)/../Cerebral.AiDictation.NativeHost/Cerebral.AiDictation.NativeHost.csproj"
+             Targets="GetTargetPath" Properties="Configuration=$(Configuration);TargetFramework=net10.0" BuildInParallel="false">
+      <Output TaskParameter="TargetOutputs" ItemName="_DictationNativeHostTarget" />
+    </MSBuild>
+    <PropertyGroup><_DictationNativeHostDir>@(_DictationNativeHostTarget->'%(RootDir)%(Directory)')</_DictationNativeHostDir></PropertyGroup>
+    <ItemGroup>
+      <_DictationNativeHostFiles Include="$(_DictationNativeHostDir)Cerebral.AiDictation.NativeHost.exe;$(_DictationNativeHostDir)Cerebral.AiDictation.NativeHost.dll;$(_DictationNativeHostDir)Cerebral.AiDictation.NativeHost.runtimeconfig.json;$(_DictationNativeHostDir)Cerebral.AiDictation.NativeHost.deps.json" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_DictationNativeHostFiles)" DestinationFolder="$(TargetDir)NativeSpeech" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

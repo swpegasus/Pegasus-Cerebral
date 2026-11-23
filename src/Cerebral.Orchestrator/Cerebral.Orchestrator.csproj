@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><EnableWindowsTargeting>true</EnableWindowsTargeting></PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>../../assets/branding/cerebral-orchestrator.ico</ApplicationIcon>
+    <Product>Pegasus Cerebral</Product>
+    <AssemblyTitle>Pegasus Cerebral</AssemblyTitle>
+    <Description>Conversation and development workspace</Description>
+    <Company>Pegasus</Company>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CerebralFrameworkReferenceDirectory)' == ''">
+    <ProjectReference Include="../Cerebral.Desktop/Cerebral.Desktop.csproj" />
+  </ItemGroup>
+  <!-- A GUI-only update can compile against the installed framework without rebuilding it.
+       This changes compile-time references only; the installed application keeps its normal loader. -->
+  <ItemGroup Condition="'$(CerebralFrameworkReferenceDirectory)' != ''">
+    <Reference Include="Cerebral.Contracts"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Contracts.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Core"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Core.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Client"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Client.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Desktop.Plugins.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Desktop"><HintPath>$(CerebralFrameworkReferenceDirectory)/Cerebral.Desktop.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources/StatusIcons/*" LogicalName="Cerebral.Orchestrator.StatusIcons.%(Filename)%(Extension)" />
+    <None Update="Resources/StatusIcons/LICENSE.txt;Resources/StatusIcons/NOTICE.txt;Resources/StatusIcons/provenance.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup><Using Remove="System.Windows.Forms" /><Using Remove="System.Drawing" /></ItemGroup>
+  <ItemGroup>
+    <!-- Main keeps these existing internal helpers in its own renderer assembly. -->
+    <Compile Include="../Cerebral.Desktop/RendererLayoutSession.cs" Link="RendererLayoutSession.cs" />
+    <Compile Include="../Cerebral.Engine/Workflows/WorkflowSchema.cs" Link="WorkflowSchema.cs" />
+    <Compile Include="../Cerebral.Worker/ChatPluginInstallDefinitionCompatibility.cs" Link="PluginLifecycle/ChatPluginInstallDefinitionCompatibility.cs" />
+  </ItemGroup>
+</Project>

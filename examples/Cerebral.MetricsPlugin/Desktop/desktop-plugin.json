@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.metrics",
+  "name": "Cerebral Metrics",
+  "version": "0.2.0",
+  "description": "Native Configuration dashboard for bounded local scalar history, collection coverage and inference/workflow observations.",
+  "assembly": "Cerebral.MetricsPlugin.Desktop.dll",
+  "entryType": "Cerebral.MetricsPlugin.Desktop.MetricsDesktopPlugin",
+  "defaultEnabled": false,
+  "dependencies": []
+}

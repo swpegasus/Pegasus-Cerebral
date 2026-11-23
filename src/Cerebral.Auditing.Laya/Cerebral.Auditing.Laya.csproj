@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Cerebral.Auditing/Cerebral.Auditing.csproj" />
+    <ProjectReference Include="../Cerebral.Core/Cerebral.Core.csproj" />
+  </ItemGroup>
+</Project>

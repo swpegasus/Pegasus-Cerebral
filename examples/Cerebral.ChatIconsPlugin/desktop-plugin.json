@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.chat-icons",
+  "name": "Chat Icons",
+  "version": "1.0.3",
+  "description": "A small licensed icon picker for editable chat fields, readable message role decorations, and portable icon references for project assets. Inserts Unicode text at the selected cursor; never submits a message.",
+  "assembly": "Cerebral.ChatIconsPlugin.dll",
+  "entryType": "Cerebral.ChatIconsPlugin.ChatIconsPlugin"
+}

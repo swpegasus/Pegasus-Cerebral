@@ -1,0 +1,18 @@
+{
+  "bindAddress": "127.0.0.1",
+  "port": 47831,
+  "allowedPeerCidrs": ["127.0.0.0/8", "::1/128"],
+  "products": {
+    "cortex": {
+      "executable": "C:\\Program Files\\Pegasus\\Cortex\\PegasusCortex.exe",
+      "arguments": ["stdio"],
+      "workingDirectory": "C:\\Development\\Pegasus-Cortex",
+      "cortexMultiplex": true
+    },
+    "cerebral": {
+      "executable": "C:\\Development\\Pegasus-Cerebral\\tools\\SharedMcp\\CerebralBackend\\bin\\Debug\\net10.0\\Pegasus.Cerebral.McpBackend.exe",
+      "arguments": [],
+      "workingDirectory": "C:\\Development\\Pegasus-Cerebral"
+    }
+  }
+}

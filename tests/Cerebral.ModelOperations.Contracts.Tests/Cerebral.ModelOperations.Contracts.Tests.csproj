@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Engine.Contracts/Cerebral.Engine.Contracts.csproj" />
+  </ItemGroup>
+</Project>

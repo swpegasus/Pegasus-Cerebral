@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 3,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.autoprompt",
+  "name": "Pegasus AutoPrompt",
+  "version": "1.0.2",
+  "description": "Suggest a next user message from only the latest final response. Tab inserts the suggestion into an empty composer for review; it never sends. Uses an explicitly selected AutoPrompt profile and requires compatible generation support.",
+  "assembly": "Cerebral.AutoPromptPlugin.dll",
+  "entryType": "Cerebral.AutoPromptPlugin.AutoPromptPlugin",
+  "dependencies": [],
+  "defaultEnabled": false,
+  "exclusiveGroup": "pegasus.autoprompt",
+  "exclusivePriority": 0
+}

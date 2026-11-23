@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "bindings": [
+    {
+      "pluginId": "pegasus.ai-dictation",
+      "resourceId": "nemo-speech-cpu",
+      "source": ".runtime/speech/nemo-0.1.0-win-x64-cpu"
+    },
+    {
+      "pluginId": "pegasus.ai-dictation",
+      "resourceId": "parakeet-tdt-0.6b-v3",
+      "source": ".runtime/speech/models/nvidia-parakeet-tdt-0.6b-v3",
+      "additionalFiles": [
+        {
+          "source": ".runtime/speech/speech-assets.json",
+          "destination": "speech-assets.json"
+        }
+      ]
+    }
+  ]
+}

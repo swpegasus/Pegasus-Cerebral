@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Version>0.2.22</Version>
+    <Authors>Pegasus</Authors>
+    <Deterministic>true</Deterministic>
+    <!-- A complete local Books checkout keeps its existing build. A filtered checkout omits both projects. -->
+    <_CerebralBooksServiceSource>$(MSBuildThisFileDirectory)src/Cerebral.Books/Cerebral.Books.csproj</_CerebralBooksServiceSource>
+    <_CerebralBooksDesktopSource>$(MSBuildThisFileDirectory)examples/Cerebral.BookPlugin/Cerebral.BookPlugin.csproj</_CerebralBooksDesktopSource>
+    <_CerebralBooksSourceState Condition="Exists('$(_CerebralBooksServiceSource)') And Exists('$(_CerebralBooksDesktopSource)')">complete</_CerebralBooksSourceState>
+    <_CerebralBooksSourceState Condition="!Exists('$(_CerebralBooksServiceSource)') And !Exists('$(_CerebralBooksDesktopSource)')">absent</_CerebralBooksSourceState>
+    <_CerebralBooksSourceState Condition="'$(_CerebralBooksSourceState)' == ''">partial</_CerebralBooksSourceState>
+    <CerebralIncludeBooks Condition="'$(CerebralIncludeBooks)' == '' And '$(_CerebralBooksSourceState)' == 'complete'">true</CerebralIncludeBooks>
+    <CerebralIncludeBooks Condition="'$(CerebralIncludeBooks)' == ''">false</CerebralIncludeBooks>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 2, "contract": "pegasus.cerebral.service", "apiVersion": 1,
+  "id": "pegasus.engine-debug", "name": "Engine Debug Monitor", "version": "1.0.0",
+  "description": "Optional read-only bounded engine output diagnostics. One rolling 24-hour log, with chat/request/run/effect identity.",
+  "assembly": "Cerebral.EngineDiagnosticsPlugin.dll", "entryType": "Cerebral.EngineDiagnosticsPlugin.EngineDiagnosticsPlugin"
+}

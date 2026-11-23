@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "resources": [
+    {
+      "id": "chat-icons",
+      "kind": "shared",
+      "source": "Resources/Icons/chat-v1",
+      "destination": "Icons/chat-v1"
+    }
+  ]
+}

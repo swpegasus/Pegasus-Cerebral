@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CerebralSdkProfile)' == ''">
+    <ProjectReference Include="../../examples/Cerebral.PersonalityPlugin/Cerebral.PersonalityPlugin.csproj" />
+    <ProjectReference Include="../../examples/Cerebral.PersonalityPlugin/Service/Cerebral.PersonalityServicePlugin.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Desktop.Plugins/Cerebral.Desktop.Plugins.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Core/Cerebral.Core.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Desktop/Cerebral.Desktop.csproj" />
+  </ItemGroup>
+  <!-- Ordinary CopyLocal references populate only the new fixture output, not a host overlay. -->
+  <ItemGroup Condition="'$(CerebralSdkProfile)' == 'installed-20261121'">
+    <None Include="$(CerebralPersonalityNativeCandidateDirectory)/desktop-plugin.json" Link="desktop-plugin.json" CopyToOutputDirectory="Always" />
+    <Reference Include="Cerebral.Desktop.Plugins"><HintPath>$(CerebralSdkDirectory)/Cerebral.Desktop.Plugins.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Core"><HintPath>$(CerebralSdkDirectory)/Cerebral.Core.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Contracts"><HintPath>$(CerebralSdkDirectory)/Cerebral.Contracts.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Client"><HintPath>$(CerebralSdkDirectory)/Cerebral.Client.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.Desktop"><HintPath>$(CerebralSdkDirectory)/Cerebral.Desktop.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.PersonalityPlugin"><HintPath>$(CerebralPersonalityNativeCandidateDirectory)/Cerebral.PersonalityPlugin.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="Cerebral.PersonalityServicePlugin"><HintPath>$(CerebralPersonalityServiceCandidateDirectory)/Cerebral.PersonalityServicePlugin.dll</HintPath><Private>true</Private></Reference>
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Desktop.Plugins.dll" ExpectedSha256="d929ce7b56b1a1f10866fe7546035c8b60d9e65d45c37954eea6cd286e2ad0ef" />
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Core.dll" ExpectedSha256="41612d833e900298d9c400f78e10b585589a71b2d10890069d1d38e0c177cac9" />
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Contracts.dll" ExpectedSha256="d0b832fa8d02a143e0515f85336bce573832880b14356b6d9a21ce858706cdb2" />
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Client.dll" ExpectedSha256="fa9f90b1519b8920704398acfbccd62fcbc3e31957cfecc8676a8d2493114898" />
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Desktop.dll" ExpectedSha256="f982e1ff5639141736e331cf125bc5dfeee494f225ebd5aa4c0add0f5a0a9557" />
+  </ItemGroup>
+  <Target Name="VerifyPersonalityCurrentFixtureSdk" BeforeTargets="PrepareForBuild;ResolveAssemblyReferences" Condition="'$(CerebralSdkProfile)' != ''">
+    <Error Condition="'$(CerebralSdkProfile)' != 'installed-20261121'" Text="Unknown CerebralSdkProfile. Use installed-20261121 or leave it empty for the existing build modes." />
+    <Error Condition="'$(CerebralSdkDirectory)' == '' or !Exists('$(CerebralSdkDirectory)')" Text="The installed-20261121 profile requires an existing CerebralSdkDirectory." />
+    <Error Condition="'$(CerebralPersonalityNativeCandidateDirectory)' == '' or '$(CerebralPersonalityServiceCandidateDirectory)' == ''" Text="Supply both explicit freshly built Personality candidate directories." />
+    <Error Condition="!$([System.IO.Path]::IsPathFullyQualified('$(CerebralPersonalityNativeCandidateDirectory)')) or !$([System.IO.Path]::IsPathFullyQualified('$(CerebralPersonalityServiceCandidateDirectory)'))" Text="Personality candidate directories must be absolute." />
+    <Error Condition="!Exists('$(CerebralPersonalityNativeCandidateDirectory)/Cerebral.PersonalityPlugin.dll') or !Exists('$(CerebralPersonalityServiceCandidateDirectory)/Cerebral.PersonalityServicePlugin.dll')" Text="A freshly built Personality candidate DLL is missing." />
+    <Error Condition="!Exists('$(CerebralPersonalityNativeCandidateDirectory)/desktop-plugin.json')" Text="The native candidate manifest required by the package fixture is missing." />
+    <GetFileHash Files="@(PersonalityCurrentSdk)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="PersonalityCurrentHashedSdk" /></GetFileHash>
+    <Error Condition="'%(PersonalityCurrentHashedSdk.FileHash)' != '%(PersonalityCurrentHashedSdk.ExpectedSha256)'" Text="Current installed SDK input changed: %(PersonalityCurrentHashedSdk.Identity)" />
+  </Target>
+  <!-- Worker-only sources belong to the separately admitted WORKER_PIPE fixture lane. -->
+  <ItemGroup Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '(^|[;,\s])WORKER_PIPE($|[;,\s])'))">
+    <Compile Remove="Program.WorkerContext.cs;Program.WorkerObservations.cs;Program.WorkerPipe.cs;Program.WorkerReader.cs" />
+  </ItemGroup>
+</Project>

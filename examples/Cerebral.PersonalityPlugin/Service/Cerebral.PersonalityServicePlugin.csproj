@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><Version>1.2.3</Version><Description>Per-chat personality choices and immutable optional context sources</Description></PropertyGroup>
+  <ItemGroup><Compile Include="../PersonalityTemplates.cs" Link="PersonalityTemplates.cs" /></ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkDirectory)' == '' and '$(CerebralSdkProfile)' == ''">
+    <ProjectReference Include="../../../src/Cerebral.Core/Cerebral.Core.csproj" />
+    <ProjectReference Include="../../../src/Cerebral.Contracts/Cerebral.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkDirectory)' != '' and '$(CerebralSdkProfile)' == ''">
+    <Reference Include="Cerebral.Core, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Core.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+    <Reference Include="Cerebral.Contracts, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Contracts.dll</HintPath><SpecificVersion>true</SpecificVersion></Reference>
+    <PersonalityPinnedSdk Include="$(CerebralSdkDirectory)/Cerebral.Core.dll" ExpectedSha256="441acbbeb0ea32ca07955d82632a88c2fc3332167d3e0822851de811b06c1098" />
+    <PersonalityPinnedSdk Include="$(CerebralSdkDirectory)/Cerebral.Contracts.dll" ExpectedSha256="25ecb90dd4de31e013f2043fba3e4fae636f457e57ce5f47e416f1e0df92358a" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CerebralSdkProfile)' == 'installed-20261121'">
+    <Reference Include="Cerebral.Core, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Cerebral.Contracts, Version=0.2.22.0, Culture=neutral, PublicKeyToken=null"><HintPath>$(CerebralSdkDirectory)/Cerebral.Contracts.dll</HintPath><Private>false</Private></Reference>
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Core.dll" ExpectedSha256="41612d833e900298d9c400f78e10b585589a71b2d10890069d1d38e0c177cac9" />
+    <PersonalityCurrentSdk Include="$(CerebralSdkDirectory)/Cerebral.Contracts.dll" ExpectedSha256="d0b832fa8d02a143e0515f85336bce573832880b14356b6d9a21ce858706cdb2" />
+  </ItemGroup>
+  <Target Name="VerifyPersonalityCurrentSdk" BeforeTargets="PrepareForBuild;ResolveAssemblyReferences" Condition="'$(CerebralSdkProfile)' != ''">
+    <Error Condition="'$(CerebralSdkProfile)' != 'installed-20261121'" Text="Unknown CerebralSdkProfile. Use installed-20261121 or leave it empty for the existing build modes." />
+    <Error Condition="'$(CerebralSdkDirectory)' == '' or !Exists('$(CerebralSdkDirectory)')" Text="The installed-20261121 profile requires an existing CerebralSdkDirectory." />
+    <GetFileHash Files="@(PersonalityCurrentSdk)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="PersonalityCurrentHashedSdk" /></GetFileHash>
+    <Error Condition="'%(PersonalityCurrentHashedSdk.FileHash)' != '%(PersonalityCurrentHashedSdk.ExpectedSha256)'" Text="Current installed SDK input changed: %(PersonalityCurrentHashedSdk.Identity)" />
+  </Target>
+  <Target Name="VerifyPersonalitySdkPins" BeforeTargets="ResolveAssemblyReferences" Condition="'$(CerebralSdkDirectory)' != '' and '$(CerebralSdkProfile)' == ''">
+    <GetFileHash Files="@(PersonalityPinnedSdk)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="PersonalityHashedSdk" /></GetFileHash>
+    <Error Condition="'%(PersonalityHashedSdk.FileHash)' != '%(PersonalityHashedSdk.ExpectedSha256)'" Text="Personality SDK input changed: %(PersonalityHashedSdk.Identity)" />
+  </Target>
+  <ItemGroup><None Update="service-plugin.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" /><InternalsVisibleTo Include="Cerebral.PersonalityServicePlugin.Tests" /></ItemGroup>
+</Project>

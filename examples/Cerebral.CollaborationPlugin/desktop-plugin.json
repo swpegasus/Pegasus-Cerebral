@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.desktop",
+  "apiVersion": 1,
+  "id": "pegasus.collaboration",
+  "name": "Pegasus Collaboration",
+  "version": "1.0.0",
+  "description": "A bounded sidebar for inspecting, steering, reconciling, cancelling, and adopting durable collaboration tasks while the normal chat transcript remains visible.",
+  "assembly": "Cerebral.CollaborationPlugin.dll",
+  "entryType": "Cerebral.CollaborationPlugin.CollaborationPlugin"
+}

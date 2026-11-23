@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "cerebral.base.requirements",
+  "name": "Clarify requirements",
+  "version": "1.0.0",
+  "description": "Clarify consequential requirements and acceptance criteria before an authorized change.",
+  "triggers": [
+    "clarify requirements",
+    "stress-test a plan",
+    "requirements interview"
+  ]
+}

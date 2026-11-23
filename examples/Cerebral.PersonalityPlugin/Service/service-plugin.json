@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contract": "pegasus.cerebral.service",
+  "apiVersion": 1,
+  "id": "pegasus.personality",
+  "name": "Personality Presets",
+  "version": "1.2.3",
+  "description": "Optional owner-selected, exact-revision communication style context. Disabled until selected by the owner; contributes no model tools.",
+  "assembly": "Cerebral.PersonalityServicePlugin.dll",
+  "entryType": "Cerebral.PersonalityServicePlugin.PersonalityServicePlugin"
+}

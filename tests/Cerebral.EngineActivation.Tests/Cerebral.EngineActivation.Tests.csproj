@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Cerebral.Engine/Cerebral.Engine.csproj" />
+    <ProjectReference Include="../../src/Cerebral.Engine.Default/Cerebral.Engine.Default.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../Cerebral.EngineFixture/Cerebral.EngineFixture.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <Target Name="CopyEngineFixtures" AfterTargets="Build">
+    <MSBuild Projects="../../src/Cerebral.Engine.Default/Cerebral.Engine.Default.csproj;../Cerebral.EngineFixture/Cerebral.EngineFixture.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework)">
+      <Output TaskParameter="TargetOutputs" ItemName="_EngineFixtures" />
+    </MSBuild>
+    <Copy SourceFiles="@(_EngineFixtures)" DestinationFolder="$(TargetDir)Fixtures" />
+  </Target>
+</Project>

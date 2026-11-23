@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks></PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>../../assets/branding/cerebral-worker.ico</ApplicationIcon>
+    <Product>Pegasus Cerebral</Product>
+    <AssemblyTitle>Pegasus Cerebral Worker</AssemblyTitle>
+    <Description>Local model and agent execution service</Description>
+    <Company>Pegasus</Company>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Cerebral.Worker.Tests" />
+    <ProjectReference Include="../Cerebral.Core/Cerebral.Core.csproj" />
+    <ProjectReference Include="../Cerebral.Engine/Cerebral.Engine.csproj" />
+    <ProjectReference Include="../Cerebral.Engine.Default/Cerebral.Engine.Default.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../Cerebral.Conversation/Cerebral.Conversation.csproj" />
+    <ProjectReference Include="../Cerebral.Client/Cerebral.Client.csproj" />
+    <ProjectReference Include="../Cerebral.Tools/Cerebral.Tools.csproj" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.13" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.13" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="10.0.10" />
+  </ItemGroup>
+  <!-- Core builds seed only absent engine roots. Existing A/B packages belong to the engine lifecycle. -->
+  <Target Name="PrepareDefaultEnginePackage">
+    <!-- The build-order project reference emits this managed engine without the Worker's publish RID. -->
+    <MSBuild Projects="../Cerebral.Engine.Default/Cerebral.Engine.Default.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration);TargetFramework=$(TargetFramework);RuntimeIdentifier=">
+      <Output TaskParameter="TargetOutputs" ItemName="_DefaultEnginePath" />
+    </MSBuild>
+    <GetFileHash Files="@(_DefaultEnginePath)" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="_DefaultEngineHash" /></GetFileHash>
+    <GetFileHash Files="../Cerebral.Engine.Default/engine-settings.ini" Algorithm="SHA256"><Output TaskParameter="Items" ItemName="_DefaultEngineConfigHash" /></GetFileHash>
+    <PropertyGroup>
+      <_EngineAssemblySha>@(_DefaultEngineHash->'%(FileHash)')</_EngineAssemblySha>
+      <_EngineConfigurationSha>@(_DefaultEngineConfigHash->'%(FileHash)')</_EngineConfigurationSha>
+    </PropertyGroup>
+    <MakeDir Directories="$(IntermediateOutputPath)default-engine-package" />
+    <WriteLinesToFile File="$(IntermediateOutputPath)default-engine-package/engine.ini" Overwrite="true" Encoding="UTF-8"
+      Lines="[engine];id=pegasus.default-engine;version=1.0.0;protocol=pegasus.cerebral.engine/1;assembly=Cerebral.Engine.Default.dll;assembly-sha256=$(_EngineAssemblySha);entry-type=Cerebral.Engine.Default.DefaultEnginePlugin;configuration-sha256=$(_EngineConfigurationSha)" />
+    <ItemGroup>
+      <_DefaultEnginePackageFile Include="@(_DefaultEnginePath);../Cerebral.Engine.Default/engine-settings.ini;$(IntermediateOutputPath)default-engine-package/engine.ini" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CopyDefaultEngineSlot" AfterTargets="Build" DependsOnTargets="PrepareDefaultEnginePackage"
+          Condition="!Exists('$(TargetDir)Engines')">
+    <Copy SourceFiles="@(_DefaultEnginePackageFile)" DestinationFolder="$(TargetDir)Engines/A" />
+  </Target>
+  <Target Name="CopyDefaultEngineSlotToPublish" AfterTargets="Publish" DependsOnTargets="PrepareDefaultEnginePackage"
+          Condition="'$(PublishDir)' != '' And !Exists('$(PublishDir)Engines')">
+    <Copy SourceFiles="@(_DefaultEnginePackageFile)" DestinationFolder="$(PublishDir)Engines/A" />
+  </Target>
+</Project>

@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../Cerebral.Core/Cerebral.Core.csproj" /><ProjectReference Include="../Cerebral.Client/Cerebral.Client.csproj" /><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup></Project>
